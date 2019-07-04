@@ -92,7 +92,7 @@ class TelemetryState extends State<Telemetry> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            container(Icons.wifi, Colors.green[300], '-38 dBm'),
+            container(Icons.network_wifi, Colors.green[300], '-38 dBm'),
             container(Icons.rotate_90_degrees_ccw, Colors.red[300], '84.3°'),
             container(Icons.battery_charging_full, Colors.yellow[300], '34%'),
           ],

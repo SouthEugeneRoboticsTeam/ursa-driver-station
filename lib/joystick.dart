@@ -149,7 +149,7 @@ class JoystickState extends State<Joystick> with TickerProviderStateMixin {
 
   Widget buildHint() {
     return Align(
-      alignment: Alignment(0, 0.4),
+      alignment: Alignment(0, 0.2),
       child: Text(
         'tap and hold\nthen drag',
         textAlign: TextAlign.center,

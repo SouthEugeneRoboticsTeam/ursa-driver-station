@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ursa Control',
+      title: 'URSA Control',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -47,6 +47,8 @@ class HomePageState extends State<HomePage> {
       ),
       body: SlidingUpPanel(
         slideDirection: SlideDirection.DOWN,
+        parallaxEnabled: true,
+        parallaxOffset: 0.5,
         minHeight: 250,
         maxHeight: 400,
         panel: Telemetry(),
