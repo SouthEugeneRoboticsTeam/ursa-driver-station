@@ -56,7 +56,7 @@ class EnableToggleState extends State<EnableToggle> {
                         )
                       ),
                       child: Text(
-                        enabledMessage,
+                        enabledMessage + (enabled ? "D" : ""),
                         style: buttonStyle,
                       ),
                       color: enabled ? enabledColor : greyColor,
@@ -70,7 +70,7 @@ class EnableToggleState extends State<EnableToggle> {
                         )
                       ),
                       child: Text(
-                        disabledMessage,
+                        disabledMessage + (enabled ? "" : "D"),
                         style: buttonStyle,
                       ),
                       color: enabled ? greyColor : disabledColor,
