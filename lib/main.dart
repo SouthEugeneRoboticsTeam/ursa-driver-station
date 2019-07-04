@@ -49,6 +49,10 @@ class HomePageState extends State<HomePage> {
         slideDirection: SlideDirection.DOWN,
         parallaxEnabled: true,
         parallaxOffset: 0.5,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
         minHeight: 250,
         maxHeight: 400,
         panel: Telemetry(),
