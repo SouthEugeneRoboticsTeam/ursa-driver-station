@@ -5,12 +5,6 @@ import '../joystick.dart';
 import '../telemetry.dart';
 
 class HomePage extends StatelessWidget {
-  void onChanged(int x, int y) {
-    print("$x, $y");
-
-    // send data to robot
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,12 +21,12 @@ class HomePage extends StatelessWidget {
           bottomRight: Radius.circular(30),
         ),
         minHeight: 250,
-        maxHeight: 400,
+        maxHeight: 500,
         panel: Telemetry(),
         body: Flex(
           direction: Axis.vertical,
           children: <Widget>[
-            Joystick(onPositionChange: onChanged),
+            Joystick(),
           ],
         ),
       ),

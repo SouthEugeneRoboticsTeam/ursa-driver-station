@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
+import 'dart:math';
+import 'domain/communications.dart';
 
 class Joystick extends StatefulWidget {
-  final void Function(int x, int y) onPositionChange;
-
-  Joystick({this.onPositionChange});
-
   @override
   JoystickState createState() => JoystickState();
 }
@@ -33,11 +30,11 @@ class JoystickState extends State<Joystick> with TickerProviderStateMixin {
 
   Offset calculateMaxPosition(offset) {
     var nextPosition = calculatePosition(offset, origin);
-    var angle = math.atan(
+    var angle = atan(
         nextPosition.dy == 0.0 ? 0.0 : nextPosition.dy / nextPosition.dx);
     return Offset(
-      (math.cos(angle) * maxScaledAxisValue).abs(),
-      (math.sin(angle) * maxScaledAxisValue).abs(),
+      (cos(angle) * maxScaledAxisValue).abs(),
+      (sin(angle) * maxScaledAxisValue).abs(),
     );
   }
 
@@ -91,8 +88,10 @@ class JoystickState extends State<Joystick> with TickerProviderStateMixin {
     int newX = adjustForSensibility(position.dx);
     int newY = adjustForSensibility(position.dy);
     // Notify only on integer changes to reduce the number of messages sent
-    if (newX != previousX || newY != previousY)
-      widget.onPositionChange(newX, newY);
+    if (newX != previousX || newY != previousY) {
+      message.speed = newY;
+      message.turn = newX;
+    }
   }
 
   void onPanDown(details) {

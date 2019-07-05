@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'domain/communications.dart';
 import 'enableToggle.dart';
 import 'dart:math';
 
@@ -14,6 +15,7 @@ class Telemetry extends StatefulWidget {
 class TelemetryState extends State<Telemetry> {
   double sliderA = 0.0;
   double sliderB = 0.0;
+  double sliderC = 0.0;
 
   Widget container(IconData icon, Color color, String label) {
     return Container(
@@ -37,14 +39,29 @@ class TelemetryState extends State<Telemetry> {
   }
 
   void onChangeA(double value) {
+    message.speedP = value;
+    message.angleP = value;
+
     setState(() {
       sliderA = value;
     });
   }
 
   void onChangeB(double value) {
+    message.speedI = value;
+    message.angleI = value;
+
     setState(() {
       sliderB = value;
+    });
+  }
+
+  void onChangeC(double value) {
+    message.speedD = value;
+    message.angleD = value;
+
+    setState(() {
+      sliderC = value;
     });
   }
 
@@ -58,7 +75,7 @@ class TelemetryState extends State<Telemetry> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Flexible(
-            flex: 3,
+            flex: 4,
             child: Slider(value: value, onChanged: onChanged),
           ),
           Flexible(
@@ -86,6 +103,7 @@ class TelemetryState extends State<Telemetry> {
             children: <Widget>[
               slider(sliderA, onChangeA, "Slider A"),
               slider(sliderB, onChangeB, "Slider B"),
+              slider(sliderC, onChangeC, "Slider C"),
             ],
           )
         ),

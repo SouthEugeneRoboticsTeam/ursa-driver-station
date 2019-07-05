@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'domain/communications.dart';
 
 class EnableToggle extends StatefulWidget {
   const EnableToggle({Key key}) : super(key: key);
@@ -21,12 +22,16 @@ class EnableToggleState extends State<EnableToggle> {
   bool enabled = false;
 
   void _enable() {
+    message.enabled = true;
+
     setState(() {
       enabled = true;
     });
   }
 
   void _disable() {
+    message.enabled = false;
+
     setState(() {
       enabled = false;
     });
