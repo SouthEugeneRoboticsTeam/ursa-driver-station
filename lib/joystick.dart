@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
-import 'domain/communications.dart';
+
+import 'package:flutter/material.dart';
+import 'package:ursa_ds_mobile/domain/communications.dart';
 
 class Joystick extends StatefulWidget {
   @override

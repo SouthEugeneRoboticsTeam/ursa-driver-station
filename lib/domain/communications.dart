@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'outgoingMessage.dart';
+
+import 'package:ursa_ds_mobile/domain/outgoingMessage.dart';
 
 //final InternetAddress address = InternetAddress('10.25.21.1');
 final InternetAddress address = InternetAddress.loopbackIPv4;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import '../drawer.dart';
-import '../joystick.dart';
-import '../telemetry.dart';
+import 'package:ursa_ds_mobile/drawer.dart';
+import 'package:ursa_ds_mobile/joystick.dart';
+import 'package:ursa_ds_mobile/telemetry.dart';
 
 class HomePage extends StatelessWidget {
   @override

@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'domain/communications.dart';
-import 'enableToggle.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:ursa_ds_mobile/domain/communications.dart';
+import 'package:ursa_ds_mobile/enableToggle.dart';
 
 final random = new Random();
 

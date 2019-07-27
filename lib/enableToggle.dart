@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'domain/communications.dart';
+import 'package:ursa_ds_mobile/domain/communications.dart';
 
 class EnableToggle extends StatefulWidget {
   const EnableToggle({Key key}) : super(key: key);

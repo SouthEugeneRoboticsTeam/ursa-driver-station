@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'pages/home.dart';
-import 'pages/settings.dart';
+import 'package:ursa_ds_mobile/pages/home.dart';
+import 'package:ursa_ds_mobile/pages/settings.dart';
 
 class NavigationDrawer extends StatelessWidget {
   void navigateTo(BuildContext context, Widget page) {
