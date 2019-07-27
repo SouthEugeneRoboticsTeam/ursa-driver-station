@@ -1,16 +1,24 @@
-# ursa_ds_mobile
+# URSA Mobile Driver Station
 
-A new Flutter application.
+This app allows control of SERT's URSA robots.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is built in Flutter and Dart. If you don't already have Flutter
+installed, follow the instructions
+[here](https://flutter.dev/docs/get-started/install).
 
-A few resources to get you started if this is your first Flutter project:
+## Installation and Running
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Once Flutter has been installed, you can install this project's dependencies
+with:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+$ flutter packages get
+```
+
+Then, run the app by executing the following command:
+
+```bash
+$ flutter run
+```
