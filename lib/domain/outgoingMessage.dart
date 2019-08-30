@@ -42,7 +42,7 @@ class OutgoingMessage {
     _builder.addByte(advanced ? 1 : 0);
 
     // Convert float data to a 4-byte array
-    ByteData data = ByteData(4);
+    var data = ByteData(4);
 
     data.setFloat32(0, angleP, Endian.little);
     _builder.add(data.buffer.asUint8List(0));

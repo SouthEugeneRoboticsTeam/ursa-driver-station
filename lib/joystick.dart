@@ -80,7 +80,7 @@ class JoystickState extends State<Joystick> with TickerProviderStateMixin {
   }
 
   int adjustForSensibility(double val) =>
-      val.abs() < 5 ? 0 : val.round();
+      val.abs() < 5 ? 0 : (pow(val.abs() / 100, 2) * 80 * val.sign).round();
 
   void changePosition(setStateFn) {
     int previousX = adjustForSensibility(position.dx);
