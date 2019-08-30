@@ -18,7 +18,7 @@ class SettingsPage extends StatelessWidget {
         title: Text('Settings'),
       ),
       drawer: NavigationDrawer(),
-      body: StoreConnector <AppState, _ViewModel>(
+      body: StoreConnector<AppState, _ViewModel>(
         converter: (store) => _ViewModel.create(store),
         builder: (context, _ViewModel viewModel) => ListView(
           children: [

@@ -1,11 +1,27 @@
 import 'package:ursa_ds_mobile/model.dart';
-
-ControlMode changeControlMode(ControlMode state, action) {
-  return action.controlMode;
-}
+import 'package:ursa_ds_mobile/store/actions.dart';
 
 AppState appStateReducer(AppState state, action) {
-  return AppState(
-    controlMode: changeControlMode(state.controlMode, action),
-  );
+  switch(action.runtimeType) {
+    case SetControlMode:
+      return AppState(
+        controlMode: action.controlMode,
+        incomingMessage: state.incomingMessage,
+        connected: state.connected,
+      );
+    case SetMessageData:
+      return AppState(
+        controlMode: state.controlMode,
+        incomingMessage: action.incomingMessage,
+        connected: state.connected,
+      );
+    case SetConnectionStatus:
+      return AppState(
+        controlMode: state.controlMode,
+        incomingMessage: state.incomingMessage,
+        connected: action.connected,
+      );
+  }
+
+  return state;
 }

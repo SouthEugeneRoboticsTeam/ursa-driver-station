@@ -2,16 +2,18 @@ import 'dart:io';
 import 'dart:typed_data';
 
 class IncomingMessage {
-  bool enabled;
-  bool tipped;
-  int robotId;
-  int modelNumber;
-  double pitch;
-  int voltage;
-  int leftMotorSpeed;
-  int rightMotorSpeed;
-  double pitchTarget;
-  double pitchOffset;
+  bool enabled = false;
+  bool tipped = false;
+  int robotId = 0;
+  int modelNumber = 0;
+  double pitch = 0;
+  int voltage = 0;
+  int leftMotorSpeed = 0;
+  int rightMotorSpeed = 0;
+  double pitchTarget = 0;
+  double pitchOffset = 0;
+
+  int messageTime = DateTime.now().millisecondsSinceEpoch;
 
   IncomingMessage(List<int> bytes) {
     var buffer = Uint8List.fromList(bytes).buffer;
@@ -29,4 +31,6 @@ class IncomingMessage {
     this.pitchTarget = data.getFloat32(17, Endian.little);
     this.pitchOffset = data.getFloat32(21, Endian.little);
   }
+
+  IncomingMessage.empty();
 }

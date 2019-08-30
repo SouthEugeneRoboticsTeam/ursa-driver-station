@@ -1,8 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 import 'package:ursa_ds_mobile/domain/communications.dart';
+import 'package:ursa_ds_mobile/domain/incomingMessage.dart';
 import 'package:ursa_ds_mobile/enableToggle.dart';
+import 'package:ursa_ds_mobile/model.dart';
 
 final random = new Random();
 
@@ -66,6 +70,8 @@ class TelemetryState extends State<Telemetry> {
     });
   }
 
+  int batteryCharge(int voltage) => (voltage / 255 * 100).round();
+
   Widget slider(double value, ValueChanged<double> onChanged, String label) {
     TextEditingController controller =
         TextEditingController(text: value.toStringAsFixed(3));
@@ -95,29 +101,81 @@ class TelemetryState extends State<Telemetry> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              slider(sliderA, onChangeA, "Slider A"),
-              slider(sliderB, onChangeB, "Slider B"),
-              slider(sliderC, onChangeC, "Slider C"),
-            ],
-          )
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return StoreConnector<AppState, _ViewModel>(
+      converter: (store) => _ViewModel.create(store),
+      builder: (context, _ViewModel viewModel) {
+        var pitch = viewModel.message.pitch.round();
+        var battery = batteryCharge(viewModel.message.voltage);
+
+        var messageTime = viewModel.message.messageTime;
+        var currentTime = DateTime.now().millisecondsSinceEpoch;
+
+        var wifiColor = Colors.red[300];
+        var wifiMessage = 'Disconnected';
+        if (viewModel.connected && currentTime - messageTime < 100) {
+          wifiColor = Colors.green[300];
+          wifiMessage = 'Connected';
+        } else if (viewModel.connected && currentTime - messageTime < 1000) {
+          wifiColor = Colors.yellow[300];
+          wifiMessage = 'Connected';
+        }
+
+        var pitchColor = Colors.red[300];
+        if (pitch.abs() <= 25) {
+          pitchColor = Colors.green[300];
+        } else if (pitch.abs() <= 50) {
+          pitchColor = Colors.yellow[300];
+        }
+
+        var batteryColor = Colors.red[300];
+        if (battery >= 60) {
+          batteryColor = Colors.green[300];
+        } else if (battery >= 40) {
+          batteryColor = Colors.yellow[300];
+        }
+
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            container(Icons.network_wifi, Colors.green[300], '-38 dBm'),
-            container(Icons.rotate_90_degrees_ccw, Colors.red[300], '84.3°'),
-            container(Icons.battery_charging_full, Colors.yellow[300], '34%'),
+            Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    slider(sliderA, onChangeA, "Slider A"),
+                    slider(sliderB, onChangeB, "Slider B"),
+                    slider(sliderC, onChangeC, "Slider C"),
+                  ],
+                )
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                container(Icons.network_wifi, wifiColor, wifiMessage),
+                container(Icons.rotate_90_degrees_ccw, pitchColor, '$pitch°'),
+                container(Icons.battery_charging_full, batteryColor, '$battery%'),
+              ],
+            ),
+            EnableToggle(),
           ],
-        ),
-        EnableToggle(),
-      ],
+        );
+      },
+    );
+  }
+}
+
+class _ViewModel {
+  final IncomingMessage message;
+  final bool connected;
+
+  _ViewModel({
+    this.message,
+    this.connected,
+  });
+
+  factory _ViewModel.create(Store<AppState> store) {
+    return _ViewModel(
+      message: store.state.incomingMessage,
+      connected: store.state.connected
     );
   }
 }
