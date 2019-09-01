@@ -25,7 +25,7 @@ void main() {
     if (wifiIP != null && wifiIP.startsWith('10.25.21')) {
       store.dispatch(SetConnectionStatus(true));
 
-      initSocket().then((x) {
+      initSocket().then((_) {
         initSendLoop();
 
         receiveData((IncomingMessage data) {
