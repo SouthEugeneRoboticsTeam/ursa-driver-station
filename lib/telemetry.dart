@@ -22,6 +22,8 @@ class TelemetryState extends State<Telemetry> {
   double sliderB = 0.0;
   double sliderC = 0.0;
 
+  List<int> batteryValues = List.filled(32, 0, growable: true);
+
   Widget container(IconData icon, Color color, String label) {
     return Container(
       height: 120,
@@ -70,7 +72,7 @@ class TelemetryState extends State<Telemetry> {
     });
   }
 
-  int batteryCharge(int voltage) => (voltage / 255 * 100).round();
+  int batteryCharge(double voltage) => (voltage / 255 * 100).round();
 
   Widget slider(double value, ValueChanged<double> onChanged, String label) {
     TextEditingController controller =
@@ -104,18 +106,23 @@ class TelemetryState extends State<Telemetry> {
     return StoreConnector<AppState, _ViewModel>(
       converter: (store) => _ViewModel.create(store),
       builder: (context, _ViewModel viewModel) {
+        batteryValues.removeAt(0);
+        batteryValues.add(viewModel.message.voltage);
+
+        var batteryAvg = batteryValues.fold(0, (p, c) => p + c) / batteryValues.length;
+
+        var battery = batteryCharge(batteryAvg);
         var pitch = viewModel.message.pitch.round();
-        var battery = batteryCharge(viewModel.message.voltage);
 
         var messageTime = viewModel.message.messageTime;
         var currentTime = DateTime.now().millisecondsSinceEpoch;
 
         var wifiColor = Colors.red[300];
         var wifiMessage = 'Disconnected';
-        if (viewModel.connected && currentTime - messageTime < 100) {
+        if (viewModel.connected && currentTime - messageTime < 200) {
           wifiColor = Colors.green[300];
           wifiMessage = 'Connected';
-        } else if (viewModel.connected && currentTime - messageTime < 1000) {
+        } else if (viewModel.connected) {
           wifiColor = Colors.yellow[300];
           wifiMessage = 'Connected';
         }

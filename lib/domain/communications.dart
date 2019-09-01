@@ -10,20 +10,29 @@ final int port = 2521;
 OutgoingMessage message = OutgoingMessage();
 
 RawDatagramSocket socket;
+Timer sendLoop;
+StreamSubscription subscription;
+
+const interval = Duration(milliseconds: 50); // 20Hz refresh
 
 Future initSocket() async {
+  if (socket != null) socket.close();
+
   socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, port);
 }
 
 void initSendLoop() {
-  const interval = Duration(milliseconds: 50); // 20Hz refresh
-  Timer.periodic(interval, (Timer t) => sendData(message.getBytes()));
+  if (sendLoop != null) sendLoop.cancel();
+
+  sendLoop = Timer.periodic(interval, (Timer t) => sendData(message.getBytes()));
 }
 
-void receiveData(Function(IncomingMessage) onDataReceived) {
-  if (socket == null) return;
+void receiveData(Function(IncomingMessage) onDataReceived) async {
+  assert(socket != null);
 
-  socket.listen((RawSocketEvent e) {
+  if (subscription != null) await subscription.cancel();
+
+  subscription = socket.listen((RawSocketEvent e) {
     Datagram d = socket.receive();
     if (d == null) return;
 
@@ -32,7 +41,7 @@ void receiveData(Function(IncomingMessage) onDataReceived) {
 }
 
 void sendData(List<int> message) {
-  if (socket == null) return;
+  assert(socket != null);
 
   socket.send(message, address, port);
 }
