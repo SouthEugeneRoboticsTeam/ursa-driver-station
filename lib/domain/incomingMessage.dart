@@ -12,6 +12,12 @@ class IncomingMessage {
   int rightMotorSpeed = 0;
   double pitchTarget = 0;
   double pitchOffset = 0;
+  double speedP = 0;
+  double speedI = 0;
+  double speedD = 0;
+  double angleP = 0;
+  double angleI = 0;
+  double angleD = 0;
 
   int messageTime = DateTime.now().millisecondsSinceEpoch;
 
@@ -30,6 +36,13 @@ class IncomingMessage {
     this.rightMotorSpeed = data.getInt32(13, Endian.little);
     this.pitchTarget = data.getFloat32(17, Endian.little);
     this.pitchOffset = data.getFloat32(21, Endian.little);
+
+    this.speedP = data.getFloat32(25, Endian.little);
+    this.speedI = data.getFloat32(29, Endian.little);
+    this.speedD = data.getFloat32(33, Endian.little);
+    this.angleP = data.getFloat32(37, Endian.little);
+    this.angleI = data.getFloat32(41, Endian.little);
+    this.angleD = data.getFloat32(45, Endian.little);
   }
 
   IncomingMessage.empty();

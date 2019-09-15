@@ -1,26 +1,17 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:ursa_ds_mobile/domain/communications.dart';
 import 'package:ursa_ds_mobile/domain/incomingMessage.dart';
 import 'package:ursa_ds_mobile/model.dart';
 import 'package:ursa_ds_mobile/pages/home.dart';
 import 'package:ursa_ds_mobile/store/actions.dart';
-import 'package:ursa_ds_mobile/store/reducer.dart';
-
-final Store store = Store<AppState>(
-  appStateReducer,
-  initialState: AppState.initialState(),
-);
+import 'package:ursa_ds_mobile/store/store.dart';
 
 void main() {
-  SystemChrome.setEnabledSystemUIOverlays([]);
-
   Connectivity().onConnectivityChanged.listen((ConnectivityResult result) async {
     var wifiIP = await (Connectivity().getWifiIP());
-    print('$wifiIP');
+    print('IP: $wifiIP');
 
     if (wifiIP != null && wifiIP.startsWith('10.25.21')) {
       store.dispatch(SetConnectionStatus(true));

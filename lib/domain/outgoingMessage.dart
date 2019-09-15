@@ -13,6 +13,7 @@ class OutgoingMessage {
   double speedP = 0;
   double speedI = 0;
   double speedD = 0;
+  int saveRecallState = 1;
 
   int _speed = 100;
 
@@ -61,6 +62,8 @@ class OutgoingMessage {
 
     data.setFloat32(0, speedD, Endian.little);
     _builder.add(data.buffer.asUint8List(0));
+
+    _builder.addByte(saveRecallState);
 
     return _builder.takeBytes();
   }
