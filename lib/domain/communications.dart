@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/scheduler.dart';
 import 'package:ursa_ds_mobile/domain/incomingMessage.dart';
 import 'package:ursa_ds_mobile/domain/outgoingMessage.dart';
 
@@ -24,7 +25,7 @@ Future initSocket() async {
 void initSendLoop() {
   if (sendLoop != null) sendLoop.cancel();
 
-  sendLoop = Timer.periodic(interval, (Timer t) => sendData(message.getBytes()));
+  sendLoop = Timer.periodic(interval, (Timer t) => SchedulerBinding.instance.scheduleTask(() => sendData(message.getBytes()), Priority.touch));
 }
 
 void receiveData(Function(IncomingMessage) onDataReceived) async {

@@ -165,13 +165,6 @@ class SettingsState extends State<SettingsPage> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-
-    message.saveRecallState = 1;
-  }
 }
 
 class _ViewModel {

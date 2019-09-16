@@ -10,6 +10,8 @@ class IncomingMessage {
   int voltage = 0;
   int leftMotorSpeed = 0;
   int rightMotorSpeed = 0;
+  int auxLength = 0;
+  bool containsPid = false;
   double pitchTarget = 0;
   double pitchOffset = 0;
   double speedP = 0;
@@ -37,12 +39,17 @@ class IncomingMessage {
     this.pitchTarget = data.getFloat32(17, Endian.little);
     this.pitchOffset = data.getFloat32(21, Endian.little);
 
-    this.speedP = data.getFloat32(25, Endian.little);
-    this.speedI = data.getFloat32(29, Endian.little);
-    this.speedD = data.getFloat32(33, Endian.little);
-    this.angleP = data.getFloat32(37, Endian.little);
-    this.angleI = data.getFloat32(41, Endian.little);
-    this.angleD = data.getFloat32(45, Endian.little);
+    this.auxLength = bytes[25];
+    this.containsPid = bytes[26] == 1;
+
+    if (this.containsPid) {
+      this.angleP = data.getFloat32(27, Endian.little);
+      this.angleI = data.getFloat32(31, Endian.little);
+      this.angleD = data.getFloat32(35, Endian.little);
+      this.speedP = data.getFloat32(39, Endian.little);
+      this.speedI = data.getFloat32(43, Endian.little);
+      this.speedD = data.getFloat32(47, Endian.little);
+    }
   }
 
   IncomingMessage.empty();

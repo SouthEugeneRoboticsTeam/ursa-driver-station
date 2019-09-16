@@ -5,7 +5,7 @@ class OutgoingMessage {
   BytesBuilder _builder = BytesBuilder();
 
   bool enabled = false;
-  bool advanced = false;
+  bool advanced = true;
   int auxiliary = 0;
   double angleP = 0;
   double angleI = 0;
