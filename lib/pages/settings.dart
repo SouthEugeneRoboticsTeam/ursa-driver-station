@@ -94,7 +94,7 @@ class SettingsState extends State<SettingsPage> {
           children: [
             Flexible(
               flex: 4,
-              child: Slider(value: value, onChanged: onChanged),
+              child: Slider(value: value, onChanged: onChanged, min: 0.0, max: 0.2),
             ),
             Flexible(
               flex: 1,
@@ -112,8 +112,6 @@ class SettingsState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("SETTINGS: $angleP,$angleI,$angleD     $speedP,$speedI,$speedD");
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
