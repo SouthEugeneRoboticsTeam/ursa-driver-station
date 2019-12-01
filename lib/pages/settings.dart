@@ -136,30 +136,6 @@ class SettingsState extends State<SettingsPage> {
                 onChanged: viewModel.onChangeControlMode,
               ),
             ),
-            ListTile(
-              title: Text('Some other setting'),
-              trailing: Checkbox(value: false, onChanged: (_) {}),
-            ),
-            ListTile(
-              title: Text('Yet another setting'),
-              trailing: Container(
-                width: 150,
-                child: TextField(
-                  controller: TextEditingController(text: '127.0.0.1'),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  inputFormatters: [
-                    WhitelistingTextInputFormatter(RegExp('[0-9\.]'))
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 15),
-              child: Divider(),
-            ),
-            slider(speedP, onChangeSpeedP, "Speed P"),
-            slider(speedI, onChangeSpeedI, "Speed I"),
-            slider(speedD, onChangeSpeedD, "Speed D"),
             Container(
               margin: EdgeInsets.only(top: 15),
               child: Divider(),
@@ -167,6 +143,13 @@ class SettingsState extends State<SettingsPage> {
             slider(angleP, onChangeAngleP, "Angle P"),
             slider(angleI, onChangeAngleI, "Angle I"),
             slider(angleD, onChangeAngleD, "Angle D"),
+            Container(
+              margin: EdgeInsets.only(top: 15),
+              child: Divider(),
+            ),
+            slider(speedP, onChangeSpeedP, "Speed P"),
+            slider(speedI, onChangeSpeedI, "Speed I"),
+            slider(speedD, onChangeSpeedD, "Speed D"),
           ],
         ),
       ),
