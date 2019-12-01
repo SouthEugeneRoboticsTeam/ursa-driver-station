@@ -27,6 +27,7 @@ class SettingsState extends State<SettingsPage> {
   void onChangeSpeedP(double value) {
     message.speedP = value;
     message.saveRecallState = 2;
+    message.advanced = true;
 
     setState(() {
       speedP = value;
@@ -36,6 +37,7 @@ class SettingsState extends State<SettingsPage> {
   void onChangeSpeedI(double value) {
     message.speedI = value;
     message.saveRecallState = 2;
+    message.advanced = true;
 
     setState(() {
       speedI = value;
@@ -45,6 +47,7 @@ class SettingsState extends State<SettingsPage> {
   void onChangeSpeedD(double value) {
     message.speedD = value;
     message.saveRecallState = 2;
+    message.advanced = true;
 
     setState(() {
       speedD = value;
@@ -54,6 +57,7 @@ class SettingsState extends State<SettingsPage> {
   void onChangeAngleP(double value) {
     message.angleP = value;
     message.saveRecallState = 2;
+    message.advanced = true;
 
     setState(() {
       angleP = value;
@@ -63,6 +67,7 @@ class SettingsState extends State<SettingsPage> {
   void onChangeAngleI(double value) {
     message.angleI = value;
     message.saveRecallState = 2;
+    message.advanced = true;
 
     setState(() {
       angleI = value;
@@ -72,6 +77,7 @@ class SettingsState extends State<SettingsPage> {
   void onChangeAngleD(double value) {
     message.angleD = value;
     message.saveRecallState = 2;
+    message.advanced = true;
 
     setState(() {
       angleD = value;
@@ -79,8 +85,7 @@ class SettingsState extends State<SettingsPage> {
   }
 
   Widget slider(double value, ValueChanged<double> onChanged, String label) {
-    TextEditingController controller =
-    TextEditingController(text: value.toStringAsFixed(3));
+    TextEditingController controller = TextEditingController(text: value.toStringAsFixed(3));
 
     return Container(
         padding: EdgeInsets.only(right: 25),
@@ -107,6 +112,8 @@ class SettingsState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("SETTINGS: $angleP,$angleI,$angleD     $speedP,$speedI,$speedD");
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),

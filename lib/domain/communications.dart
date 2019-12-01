@@ -44,5 +44,9 @@ void receiveData(Function(IncomingMessage) onDataReceived) async {
 void sendData(List<int> message) {
   assert(socket != null);
 
-  socket.send(message, address, port);
+  try {
+    socket.send(message, address, port);
+  } catch (e) {
+    print("Could not send data to bot, ensure bot is connected");
+  }
 }

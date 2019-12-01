@@ -18,10 +18,6 @@ class Telemetry extends StatefulWidget {
 }
 
 class TelemetryState extends State<Telemetry> {
-  double sliderA = 0.0;
-  double sliderB = 0.0;
-  double sliderC = 0.0;
-
   List<int> batteryValues = List.filled(32, 0, growable: true);
 
   Widget container(IconData icon, Color color, String label) {
@@ -45,61 +41,7 @@ class TelemetryState extends State<Telemetry> {
     );
   }
 
-  void onChangeA(double value) {
-    message.speedP = value;
-    message.angleP = value;
-
-    setState(() {
-      sliderA = value;
-    });
-  }
-
-  void onChangeB(double value) {
-    message.speedI = value;
-    message.angleI = value;
-
-    setState(() {
-      sliderB = value;
-    });
-  }
-
-  void onChangeC(double value) {
-    message.speedD = value;
-    message.angleD = value;
-
-    setState(() {
-      sliderC = value;
-    });
-  }
-
   int batteryCharge(double voltage) => (voltage / 255 * 100).round();
-
-  Widget slider(double value, ValueChanged<double> onChanged, String label) {
-    TextEditingController controller =
-        TextEditingController(text: value.toStringAsFixed(3));
-
-    return Container(
-      padding: EdgeInsets.only(right: 25),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Flexible(
-            flex: 4,
-            child: Slider(value: value, onChanged: onChanged),
-          ),
-          Flexible(
-            flex: 1,
-            child: TextField(
-              controller: controller,
-              onSubmitted: (String value) { onChanged(double.parse(value)); } ,
-              decoration: InputDecoration(labelText: label),
-              keyboardType: TextInputType.number,
-            ),
-          ),
-        ],
-      )
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,16 +86,6 @@ class TelemetryState extends State<Telemetry> {
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    slider(sliderA, onChangeA, "Slider A"),
-                    slider(sliderB, onChangeB, "Slider B"),
-                    slider(sliderC, onChangeC, "Slider C"),
-                  ],
-                )
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

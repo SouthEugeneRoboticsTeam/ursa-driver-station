@@ -9,6 +9,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     message.saveRecallState = 1;
+    message.advanced = false;
 
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +25,7 @@ class HomePage extends StatelessWidget {
           bottomRight: Radius.circular(30),
         ),
         minHeight: 250,
-        maxHeight: 500,
+        maxHeight: 250,
         panel: Telemetry(),
         body: Flex(
           direction: Axis.vertical,
