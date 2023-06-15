@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_joystick/flutter_joystick.dart' as joystick;
@@ -39,6 +42,9 @@ class JoystickPageState extends State<JoystickPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ModelViewer is not supported on desktop (yet)
+    bool showModelViewer = Platform.isAndroid || Platform.isIOS || kIsWeb;
+
     return Consumer<ConnectionModel>(builder: (context, value, child) {
       return Scaffold(
         appBar: AppBar(
@@ -72,14 +78,15 @@ class JoystickPageState extends State<JoystickPage> {
                   ],
                 ),
 
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: ModelViewer(
-                    yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
-                    pitch: value.status == ConnectionStatus.connected ? -_pitch : 0
+                if (showModelViewer)
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: ModelViewer(
+                      yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
+                      pitch: value.status == ConnectionStatus.connected ? -_pitch : 0
+                    ),
                   ),
-                ),
 
                 Joystick(listener: (joystick.StickDragDetails details) {
                   setState(() {
