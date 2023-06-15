@@ -76,11 +76,8 @@ class JoystickPageState extends State<JoystickPage> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.3,
                   child: ModelViewer(
-                    // yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
-                    // pitch: value.status == ConnectionStatus.connected ? -_pitch : 0
-                    yaw: true ? (_stickDragDetails?.x ?? 0) * 45 : 0,
-                    pitch: true ? -_pitch : 0
-
+                    yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
+                    pitch: value.status == ConnectionStatus.connected ? -_pitch : 0
                   ),
                 ),
 
