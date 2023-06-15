@@ -22,10 +22,15 @@ class StatusIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String connectionText = getStatusText(context, connectionStatus);
+    String enabledText = enabled ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
           width: width ?? min(MediaQuery.of(context).size.width * 0.4, 180),
           height: height,
           decoration: BoxDecoration(
@@ -34,12 +39,19 @@ class StatusIndicator extends StatelessWidget {
             color: colorMap[connectionStatus],
           ),
           child: Center(
-            child: Text(
-              getStatusText(context, connectionStatus),
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 100),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              child: Text(
+                connectionText,
+                key: ValueKey(connectionText),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+                ),
               ),
             ),
           ),
@@ -54,7 +66,9 @@ class StatusIndicator extends StatelessWidget {
           ),
         ),
 
-        Container(
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
           width: width ?? min(MediaQuery.of(context).size.width * 0.4, 180),
           height: height,
           decoration: BoxDecoration(
@@ -63,12 +77,19 @@ class StatusIndicator extends StatelessWidget {
             color: enabled ? Colors.green[300] : Colors.red[300]
           ),
           child: Center(
-            child: Text(
-              enabled ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 100),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              child: Text(
+                enabledText,
+                key: ValueKey(enabledText),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+                ),
               ),
             ),
           ),

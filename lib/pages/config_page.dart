@@ -39,7 +39,7 @@ class ConfigPageState extends State<ConfigPage> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: [
-                    Text(AppLocalizations.of(context)!.angleConfig, style: const TextStyle(fontSize: 20)),
+                    Text(AppLocalizations.of(context)!.angleConfig, style: Theme.of(context).textTheme.headlineSmall),
                     TextField(
                       controller: _anglePController,
                       decoration: const InputDecoration(
@@ -68,7 +68,7 @@ class ConfigPageState extends State<ConfigPage> {
                     // 20px spacer
                     const SizedBox(height: 20),
 
-                    Text(AppLocalizations.of(context)!.speedConfig, style: const TextStyle(fontSize: 20)),
+                    Text(AppLocalizations.of(context)!.speedConfig, style: Theme.of(context).textTheme.headlineSmall),
                     TextField(
                       controller: _speedPController,
                       decoration: const InputDecoration(

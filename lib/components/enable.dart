@@ -98,7 +98,9 @@ class SlideToEnableState extends State<SlideToEnable> with SingleTickerProviderS
             },
             child: Stack(
               children: [
-                Container(
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.easeInOut,
                   height: height,
                   decoration: BoxDecoration(
                     color: boxColor,
@@ -197,7 +199,9 @@ class SlideToEnableState extends State<SlideToEnable> with SingleTickerProviderS
                             widget.onStateChange(_enabled);
                           }
                         },
-                        child: Container(
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.easeInOut,
                           height: height,
                           width: height,
                           decoration: BoxDecoration(
