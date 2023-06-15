@@ -23,7 +23,7 @@ class ConfigPageState extends State<ConfigPage> {
   bool hasData = false;
 
   ConfigPageState() {
-    _telemetryListener();
+    _telemetryListener(useSetState: false);
   }
 
   @override
@@ -130,7 +130,7 @@ class ConfigPageState extends State<ConfigPage> {
     });
   }
 
-  void _telemetryListener() {
+  void _telemetryListener({bool useSetState = true}) {
     TelemetryMessage? message = TelemetryModel().telemetryMessage;
     if (message != null && message.containsPid) {
       _anglePController.text = num.parse(message.angleP.toStringAsFixed(6)).toString();
@@ -141,9 +141,13 @@ class ConfigPageState extends State<ConfigPage> {
       _speedIController.text = num.parse(message.speedI.toStringAsFixed(6)).toString();
       _speedDController.text = num.parse(message.speedD.toStringAsFixed(6)).toString();
 
-      setState(() {
+      if (useSetState) {
+        setState(() {
+          hasData = true;
+        });
+      } else {
         hasData = true;
-      });
+      }
 
       // Remove self
       TelemetryModel().removeListener(_telemetryListener);

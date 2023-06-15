@@ -1,7 +1,6 @@
 import 'dart:io';
 
 final InternetAddress robotAddress = InternetAddress('10.25.21.1');
-// final InternetAddress robotAddress = InternetAddress('192.168.50.1');
 const int robotPort = 2521;
 
 void logNetworkInterfaces() async {
@@ -26,18 +25,8 @@ Future<List<InternetAddress>> getNetworkIps() async {
 }
 
 Future<bool> isRobotConnected() async {
-  // for (var address in await getNetworkIps()) {
-  //   if (address.address == robotAddress.address) {
-  //     return true;
-  //   }
-  // }
-
   // true if any of network ips start with 10.25.21
   for (var address in await getNetworkIps()) {
-    print(address.address);
-    print(address.rawAddress);
-    print(robotAddress.rawAddress);
-
     if (address.rawAddress[0] == robotAddress.rawAddress[0] &&
         address.rawAddress[1] == robotAddress.rawAddress[1] &&
         address.rawAddress[2] == robotAddress.rawAddress[2]) {
@@ -49,18 +38,8 @@ Future<bool> isRobotConnected() async {
 }
 
 Future<InternetAddress?> getRobotAddress() async {
-  // for (var address in await getNetworkIps()) {
-  //   if (address.address == robotAddress.address) {
-  //     return true;
-  //   }
-  // }
-
   // true if any of network ips start with 10.25.21
   for (var address in await getNetworkIps()) {
-    print(address.address);
-    print(address.rawAddress);
-    print(robotAddress.rawAddress);
-
     if (address.rawAddress[0] == robotAddress.rawAddress[0] &&
         address.rawAddress[1] == robotAddress.rawAddress[1] &&
         address.rawAddress[2] == robotAddress.rawAddress[2]) {

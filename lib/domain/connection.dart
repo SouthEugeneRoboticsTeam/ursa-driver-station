@@ -23,25 +23,32 @@ const interval = Duration(milliseconds: 50); // 20Hz refresh
 Future initConnection() async {
   Connectivity()
       .onConnectivityChanged
-      .listen((ConnectivityResult result) async {
+      .listen(connectivityChangedListener);
 
-    print('Connection changed: $result');
-
-    bool robotConnected = await isRobotConnected();
-    InternetAddress? robotAddress = await getRobotAddress();
-
-    print('Robot connected: $robotConnected');
-
-    if (robotConnected) {
-      await initSocket(robotAddress ?? InternetAddress.anyIPv4);
-      initSendLoop();
-      receiveData(telemetryMessageListener);
-
-      ConnectionModel().setStatus(ConnectionStatus.networkConnected);
-    } else {
-      ConnectionModel().setStatus(ConnectionStatus.disconnected);
-    }
+  Timer.periodic(const Duration(seconds: 5), (_) async {
+    ConnectivityResult result = await Connectivity().checkConnectivity();
+    connectivityChangedListener(result);
   });
+}
+
+Future connectivityChangedListener(ConnectivityResult result) async {
+  bool robotConnected = await isRobotConnected();
+  InternetAddress? robotAddress = await getRobotAddress();
+
+  if (robotConnected) {
+    await initSocket(robotAddress ?? InternetAddress.anyIPv4);
+    initSendLoop();
+    receiveData(telemetryMessageListener);
+
+    TelemetryMessage? latestMessage = TelemetryModel().telemetryMessage;
+
+    // if telemetryMessage is older than 2 seconds...
+    if (latestMessage == null || latestMessage.messageTime.isBefore(DateTime.now().subtract(const Duration(seconds: 2)))) {
+      ConnectionModel().setStatus(ConnectionStatus.networkConnected);
+    }
+  } else {
+    ConnectionModel().setStatus(ConnectionStatus.disconnected);
+  }
 }
 
 Future initSocket(InternetAddress host) async {

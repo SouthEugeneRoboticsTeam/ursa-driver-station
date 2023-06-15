@@ -5,20 +5,19 @@ import 'package:ursa_ds_mobile/pages/config_page.dart';
 
 import 'domain/connection.dart';
 import 'domain/networking.dart';
+import 'domain/sentry.dart';
 import 'models/connection_model.dart';
 import 'pages/joystick_page.dart';
 
 void main() async {
-  logNetworkInterfaces();
-
-  runApp(
+  initSentry(() => runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ConnectionModel()),
       ],
       child: const UrsaApp(),
     ),
-  );
+  ));
 
   // BluetoothProvider().getConnectedDevices();
   // BluetoothProvider().getBondedDevices();

@@ -22,7 +22,7 @@ class TelemetryMessage {
   double angleI = 0;
   double angleD = 0;
 
-  int messageTime = DateTime.now().millisecondsSinceEpoch;
+  DateTime messageTime = DateTime.now();
 
   TelemetryMessage(List<int> bytes) {
     this.bytes = bytes;
