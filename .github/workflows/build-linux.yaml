@@ -27,7 +27,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt-get install -y ninja-build
+          sudo apt-get install -y ninja-build
           flutter pub get
 
       - name: Build Linux package
@@ -49,5 +49,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ursa-ds-linux.AppImage
+          name: ursa-ds-linux
           path: build/linux/URSA Driver Station-latest-x86_64.AppImage

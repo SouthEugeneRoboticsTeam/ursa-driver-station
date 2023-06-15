@@ -34,5 +34,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ursa-ds-android.apk
+          name: ursa-ds-android
           path: build/app/outputs/flutter-apk/app-release.apk
