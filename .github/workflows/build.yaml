@@ -1,0 +1,106 @@
+name: Build and Upload
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'build/*'
+    paths-ignore:
+      - '**.md'
+
+env:
+  FLUTTER_VERSION: 3.10.5
+
+jobs:
+  build-android:
+    name: Build Android
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '${{ env.FLUTTER_VERSION }}'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: URSA-Driver-Station_android
+          path: build/app/outputs/flutter-apk/*.apk
+
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '${{ env.FLUTTER_VERSION }}'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y ninja-build libglib2.0-dev libgtk-3-dev libfuse2
+          flutter pub get
+
+      - name: Build Linux package
+        run: flutter build linux
+
+      - name: Create AppImage
+        run: |
+          cp -r build/linux/x64/release/bundle build/linux/AppDir
+          cd build/linux
+
+          # Install appimage-builder
+          wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+          chmod +x appimage-builder-x86_64.AppImage
+
+          ./appimage-builder-x86_64.AppImage --recipe ../../AppImageBuilder.yml --skip-test
+
+          ls -l
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: URSA-Driver-Station_linux64
+          path: build/linux/*.AppImage
+
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '${{ env.FLUTTER_VERSION }}'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Windows package
+        run: flutter build windows
+
+      - name: Show builds (debug)
+        run: ls -R build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: URSA-Driver-Station_win64
+          path: build/windows/runner/Release
