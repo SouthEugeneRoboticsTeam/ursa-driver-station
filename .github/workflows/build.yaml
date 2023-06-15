@@ -61,13 +61,15 @@ jobs:
       - name: Create AppImage
         run: |
           cp -r build/linux/x64/release/bundle build/linux/AppDir
-          cd build/linux
+          cd build/
 
           # Install appimage-builder
           wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
           chmod +x appimage-builder-x86_64.AppImage
 
-          ./appimage-builder-x86_64.AppImage --recipe ../../AppImageBuilder.yml --skip-test
+          cd linux/
+
+          ../appimage-builder-x86_64.AppImage --recipe ../../AppImageBuilder.yml --skip-test
 
           ls -l
 
