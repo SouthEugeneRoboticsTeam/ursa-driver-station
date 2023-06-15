@@ -1,0 +1,16 @@
+{
+  "title": "Control URSA",
+
+  "connected": "Conectado",
+  "networkConnected": "Conectado a la red",
+  "disconnected": "Desconectado",
+
+  "enabled": "Habilitado",
+  "disabled": "Deshabilitado",
+
+  "config": "Configuración",
+  "angleConfig": "Configuración de PID de ángulo",
+  "speedConfig": "Configuración de PID de velocidad",
+  "save": "Guardar",
+  "saveSuccess": "Configuración guardada exitosamente"
+}

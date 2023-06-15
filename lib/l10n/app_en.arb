@@ -1,0 +1,20 @@
+{
+  "title": "URSA Control",
+
+  "connected": "Connected",
+  "networkConnected": "WiFi Connected",
+  "disconnected":  "Disconnected",
+
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+
+  "slideToEnable": "Slide to Enable",
+  "tapToDisable": "Tap to Disable",
+  "enabling": "Enabling...",
+
+  "config": "Config",
+  "angleConfig": "Angle PID Config",
+  "speedConfig": "Speed PID Config",
+  "save": "Save",
+  "saveSuccess": "Successfully saved config"
+}
