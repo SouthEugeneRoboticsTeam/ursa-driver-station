@@ -34,7 +34,7 @@ class UrsaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'URSA Control',
+      title: AppLocalizations.of(context)?.title ?? 'URSA Driver Station',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
