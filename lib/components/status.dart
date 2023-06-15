@@ -11,31 +11,31 @@ Map<ConnectionStatus, Color> colorMap = {
 };
 
 class StatusIndicator extends StatelessWidget {
-  final ConnectionStatus _connectionStatus;
-  final bool _enabled;
+  final ConnectionStatus connectionStatus;
+  final bool enabled;
 
-  const StatusIndicator({super.key, required connectionStatus, required enabled})
-  : _connectionStatus = connectionStatus,
-    _enabled = connectionStatus == ConnectionStatus.connected && enabled;
+  final double? width;
+  final double? height;
+
+  const StatusIndicator({super.key, required this.connectionStatus, required enabled, this.width, this.height = 50})
+  : enabled = connectionStatus == ConnectionStatus.connected && enabled;
 
   @override
   Widget build(BuildContext context) {
-    double width = min(MediaQuery.of(context).size.width * 0.4, 180);
-
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: width,
-          height: 50,
+          width: width ?? min(MediaQuery.of(context).size.width * 0.4, 180),
+          height: height,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
-            color: colorMap[_connectionStatus],
+            color: colorMap[connectionStatus],
           ),
           child: Center(
             child: Text(
-              getStatusText(context, _connectionStatus),
+              getStatusText(context, connectionStatus),
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class StatusIndicator extends StatelessWidget {
 
         Container(
           width: 1,
-          height: 50,
+          height: height,
           decoration: const BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.black87,
@@ -55,16 +55,16 @@ class StatusIndicator extends StatelessWidget {
         ),
 
         Container(
-          width: width,
-          height: 50,
+          width: width ?? min(MediaQuery.of(context).size.width * 0.4, 180),
+          height: height,
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             borderRadius: const BorderRadius.horizontal(right: Radius.circular(8)),
-            color: _enabled ? Colors.green[300] : Colors.red[300]
+            color: enabled ? Colors.green[300] : Colors.red[300]
           ),
           child: Center(
             child: Text(
-              _enabled ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled,
+              enabled ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
