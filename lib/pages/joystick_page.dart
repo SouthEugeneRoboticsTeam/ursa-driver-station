@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -45,59 +46,109 @@ class JoystickPageState extends State<JoystickPage> {
     // ModelViewer is not supported on desktop (yet)
     bool showModelViewer = Platform.isAndroid || Platform.isIOS || kIsWeb;
 
-    return Consumer<ConnectionModel>(builder: (context, value, child) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.title),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.settings),
-              tooltip: 'Open settings',
-              onPressed: () {
-                // navigate to config_page
-                Navigator.pushNamed(context, '/config');
-              },
-            ),
-          ],
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.title),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'Open settings',
+            onPressed: () {
+              // navigate to config_page
+              Navigator.pushNamed(context, '/config');
+            },
+          ),
+        ],
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Consumer<ConnectionModel>(builder: (context, value, child) {
+            return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+              if (constraints.maxWidth < 600) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    StatusIndicator(connectionStatus: value.status, enabled: _isEnabled),
+                    Column(
+                      children: [
+                        StatusIndicator(connectionStatus: value.status, enabled: _isEnabled),
 
-                    const SizedBox(height: 10),
+                        const SizedBox(height: 10),
 
-                    SlideToEnable(enabled: _isEnabled, onStateChange: (value) {
-                      setEnabledCommand(value);
+                        SlideToEnable(enabled: _isEnabled, onStateChange: (value) {
+                          setEnabledCommand(value);
+                        }),
+                      ],
+                    ),
+
+                    if (showModelViewer)
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: ModelViewer(
+                          yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
+                          pitch: value.status == ConnectionStatus.connected ? -_pitch : 0
+                        ),
+                      ),
+
+                    Joystick(listener: (joystick.StickDragDetails details) {
+                      setState(() {
+                        _stickDragDetails = details;
+                      });
+
+                      setJoystickCommand(details);
                     }),
                   ],
-                ),
+                );
+              } else {
+                // return desktop view
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        StatusIndicator(connectionStatus: value.status, enabled: _isEnabled),
 
-                if (showModelViewer)
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: ModelViewer(
-                      yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
-                      pitch: value.status == ConnectionStatus.connected ? -_pitch : 0
+                        const SizedBox(height: 10),
+
+                        SlideToEnable(height: clampDouble(constraints.maxHeight / 4, 50, 70), enabled: _isEnabled, onStateChange: (value) {
+                          setEnabledCommand(value);
+                        }),
+                      ],
                     ),
-                  ),
 
-                Joystick(listener: (joystick.StickDragDetails details) {
-                  setState(() {
-                    _stickDragDetails = details;
-                  });
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (showModelViewer)
+                          Container(
+                            width: constraints.maxWidth * 0.4,
+                            height: constraints.maxHeight * 0.5,
+                            child: ModelViewer(
+                              yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
+                              pitch: value.status == ConnectionStatus.connected ? -_pitch : 0
+                            ),
+                          ),
 
-                  setJoystickCommand(details);
-                }),
-              ],
-            ))),
-      );
-    });
+                        if (!showModelViewer)
+                          Container(),
+
+                        Joystick(size: min(constraints.maxHeight / 2, 200), listener: (joystick.StickDragDetails details) {
+                          setState(() {
+                            _stickDragDetails = details;
+                          });
+
+                          setJoystickCommand(details);
+                        }),
+                      ],
+                    ),
+                  ],
+                );
+              }
+            });
+          }),
+        )
+      ),
+    );
   }
 }

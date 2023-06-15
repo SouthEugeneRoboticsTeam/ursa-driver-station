@@ -7,14 +7,16 @@ import 'joystick_stick.dart';
 class Joystick extends StatelessWidget {
   final void Function(joystick.StickDragDetails) listener;
 
-  const Joystick({Key? key, required this.listener}) : super(key: key);
+  final double size;
+
+  const Joystick({Key? key, required this.listener, this.size = 200}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return joystick.Joystick(
       listener: listener,
-      base: const JoystickBase(),
-      stick: const JoystickStick(),
+      base: JoystickBase(size: size),
+      stick: JoystickStick(size: size * 0.3),
       period: const Duration(milliseconds: 5),
     );
   }
