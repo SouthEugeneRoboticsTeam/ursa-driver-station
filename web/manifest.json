@@ -1,6 +1,6 @@
 {
-    "name": "ursa_ds_mobile",
-    "short_name": "ursa_ds_mobile",
+    "name": "URSA Driver Station",
+    "short_name": "URSA DS",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

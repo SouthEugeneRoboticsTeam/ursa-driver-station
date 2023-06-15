@@ -1,0 +1,41 @@
+name: Windows Build
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'build/*'
+    paths-ignore:
+      - '**.md'
+
+env:
+  FLUTTER_VERSION: 3.10.5
+
+jobs:
+  build:
+    name: Build and upload Windows binary
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '${{ env.FLUTTER_VERSION }}'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Windows package
+        run: flutter build windows
+
+      - name: Show builds (debug)
+        run: ls -R build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ursa-ds-windows.exe
+          path: build/windows/runner/Release/ursa-ds-mobile.exe

@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
+            VALUE "CompanyName", "SERT 2521" "\0"
             VALUE "FileDescription", "ursa_ds_mobile" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "ursa_ds_mobile" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 SERT 2521. All rights reserved." "\0"
             VALUE "OriginalFilename", "ursa_ds_mobile.exe" "\0"
-            VALUE "ProductName", "ursa_ds_mobile" "\0"
+            VALUE "ProductName", "URSA Driver Station" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
