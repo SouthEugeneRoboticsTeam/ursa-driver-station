@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ursa_ds_mobile/models/connection_model.dart';
@@ -17,46 +18,59 @@ class StatusIndicator extends StatelessWidget {
   final double? width;
   final double? height;
 
-  const StatusIndicator({super.key, required this.connectionStatus, required enabled, this.width, this.height = 50})
-  : enabled = connectionStatus == ConnectionStatus.connected && enabled;
+  const StatusIndicator(
+      {super.key,
+      required this.connectionStatus,
+      required enabled,
+      this.width,
+      this.height = 50})
+      : enabled = connectionStatus == ConnectionStatus.connected && enabled;
 
   @override
   Widget build(BuildContext context) {
     String connectionText = getStatusText(context, connectionStatus);
-    String enabledText = enabled ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled;
+    String enabledText = enabled
+        ? AppLocalizations.of(context)!.enabled
+        : AppLocalizations.of(context)!.disabled;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.easeInOut,
-          width: width ?? min(MediaQuery.of(context).size.width * 0.4, 180),
-          height: height,
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: const BorderRadius.horizontal(left: Radius.circular(8)),
-            color: colorMap[connectionStatus],
-          ),
-          child: Center(
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 100),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-              child: Text(
-                connectionText,
-                key: ValueKey(connectionText),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white
+        GestureDetector(
+          onTap: () {
+            if (connectionStatus == ConnectionStatus.disconnected) {
+              AppSettings.openWIFISettings();
+            }
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            curve: Curves.easeInOut,
+            width: width ?? min(MediaQuery.of(context).size.width * 0.4, 180),
+            height: height,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius:
+                  const BorderRadius.horizontal(left: Radius.circular(8)),
+              color: colorMap[connectionStatus],
+            ),
+            child: Center(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 100),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+                child: Text(
+                  connectionText,
+                  key: ValueKey(connectionText),
+                  style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
             ),
           ),
         ),
-
         Container(
           width: 1,
           height: height,
@@ -65,17 +79,16 @@ class StatusIndicator extends StatelessWidget {
             color: Colors.black87,
           ),
         ),
-
         AnimatedContainer(
           duration: const Duration(milliseconds: 100),
           curve: Curves.easeInOut,
           width: width ?? min(MediaQuery.of(context).size.width * 0.4, 180),
           height: height,
           decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: const BorderRadius.horizontal(right: Radius.circular(8)),
-            color: enabled ? Colors.green[300] : Colors.red[300]
-          ),
+              shape: BoxShape.rectangle,
+              borderRadius:
+                  const BorderRadius.horizontal(right: Radius.circular(8)),
+              color: enabled ? Colors.green[300] : Colors.red[300]),
           child: Center(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 100),
@@ -86,10 +99,9 @@ class StatusIndicator extends StatelessWidget {
                 enabledText,
                 key: ValueKey(enabledText),
                 style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white
-                ),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ),
           ),

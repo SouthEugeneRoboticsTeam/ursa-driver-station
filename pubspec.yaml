@@ -50,6 +50,7 @@ dependencies:
   js: ^0.6.7
   flutter_blue_plus: ^1.5.2
   sentry_flutter: ^7.7.0
+  app_settings: ^4.2.0
 
 dev_dependencies:
   flutter_test:
