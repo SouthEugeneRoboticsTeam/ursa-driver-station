@@ -126,7 +126,7 @@ class JoystickPageState extends State<JoystickPage> {
                             height: constraints.maxHeight * 0.5,
                             child: ModelViewer(
                               yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
-                              pitch: value.status == ConnectionStatus.connected ? -_pitch : 0
+                              pitch: value.status == ConnectionStatus.connected ? _pitch : 0
                             ),
                           ),
 

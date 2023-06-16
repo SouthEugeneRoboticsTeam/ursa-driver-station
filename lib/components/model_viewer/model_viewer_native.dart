@@ -41,7 +41,7 @@ class ModelViewerState extends State<ModelViewer> with AutomaticKeepAliveClientM
   void didUpdateWidget(covariant ModelViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    _controller?.runJavaScript('updateOrientation(0, ${widget.pitch}, ${-widget.yaw - 180})');
+    _controller?.runJavaScript('updateOrientation(0, ${widget.pitch * -1}, ${-widget.yaw - 180})');
   }
 
   @override

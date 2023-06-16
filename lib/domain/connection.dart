@@ -95,8 +95,8 @@ void setEnabledCommand(bool enabled) {
 }
 
 void setJoystickCommand(StickDragDetails details) {
-  commandMessage.speed = (details.x * 100).round();
-  commandMessage.turn = (details.y * 100).round();
+  commandMessage.speed = (details.y * -100).round();
+  commandMessage.turn = (details.x * 100).round();
 }
 
 void setPidCommand(double angleP, double angleI, double angleD, double speedP, double speedI, double speedD) {
