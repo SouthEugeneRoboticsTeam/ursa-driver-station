@@ -39,7 +39,8 @@ class ConfigPageState extends State<ConfigPage> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: [
-                    Text(AppLocalizations.of(context)!.angleConfig, style: Theme.of(context).textTheme.headlineSmall),
+                    Text(AppLocalizations.of(context)!.angleConfig,
+                        style: Theme.of(context).textTheme.headlineSmall),
                     TextField(
                       controller: _anglePController,
                       decoration: const InputDecoration(
@@ -68,7 +69,8 @@ class ConfigPageState extends State<ConfigPage> {
                     // 20px spacer
                     const SizedBox(height: 20),
 
-                    Text(AppLocalizations.of(context)!.speedConfig, style: Theme.of(context).textTheme.headlineSmall),
+                    Text(AppLocalizations.of(context)!.speedConfig,
+                        style: Theme.of(context).textTheme.headlineSmall),
                     TextField(
                       controller: _speedPController,
                       decoration: const InputDecoration(
@@ -99,7 +101,11 @@ class ConfigPageState extends State<ConfigPage> {
 
                     // save button
                     ElevatedButton(
-                      onPressed: () { _saveConfig(context); },
+                      onPressed: hasData
+                          ? () {
+                              _saveConfig(context);
+                            }
+                          : null,
                       child: Text(AppLocalizations.of(context)!.save),
                     ),
                   ],
@@ -133,13 +139,19 @@ class ConfigPageState extends State<ConfigPage> {
   void _telemetryListener({bool useSetState = true}) {
     TelemetryMessage? message = TelemetryModel().telemetryMessage;
     if (message != null && message.containsPid) {
-      _anglePController.text = num.parse(message.angleP.toStringAsFixed(6)).toString();
-      _angleIController.text = num.parse(message.angleI.toStringAsFixed(6)).toString();
-      _angleDController.text = num.parse(message.angleD.toStringAsFixed(6)).toString();
+      _anglePController.text =
+          num.parse(message.angleP.toStringAsFixed(6)).toString();
+      _angleIController.text =
+          num.parse(message.angleI.toStringAsFixed(6)).toString();
+      _angleDController.text =
+          num.parse(message.angleD.toStringAsFixed(6)).toString();
 
-      _speedPController.text = num.parse(message.speedP.toStringAsFixed(6)).toString();
-      _speedIController.text = num.parse(message.speedI.toStringAsFixed(6)).toString();
-      _speedDController.text = num.parse(message.speedD.toStringAsFixed(6)).toString();
+      _speedPController.text =
+          num.parse(message.speedP.toStringAsFixed(6)).toString();
+      _speedIController.text =
+          num.parse(message.speedI.toStringAsFixed(6)).toString();
+      _speedDController.text =
+          num.parse(message.speedD.toStringAsFixed(6)).toString();
 
       if (useSetState) {
         setState(() {
