@@ -50,7 +50,7 @@ class ModelViewerState extends State<ModelViewer> with AutomaticKeepAliveClientM
 
     return model_viewer.ModelViewer(
       id: "robot-viewer",
-      src: 'assets/Robot.glb',
+      src: 'assets/headbot_transparent.glb',
       alt: "A model of a robot",
       autoRotate: true,
       autoRotateDelay: 0,
