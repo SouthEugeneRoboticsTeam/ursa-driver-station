@@ -100,7 +100,7 @@ jobs:
         run: |
           ls -R build/linux
           mkdir gh-release
-          cp build/linux/URSA.Driver.Station-latest-x86_64.AppImage gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_linux_x64.AppImage
+          cp "build/linux/URSA Driver Station-latest-x86_64.AppImage" gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_linux_x64.AppImage
 
       - name: Upload release artifact
         uses: softprops/action-gh-release@v1
