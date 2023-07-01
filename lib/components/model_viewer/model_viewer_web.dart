@@ -33,7 +33,7 @@ class ModelViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return model_viewer.ModelViewer(
       id: "robot-viewer",
-      src: 'assets/Robot.glb',
+      src: 'assets/headbot_transparent.glb',
       alt: "A model of a robot",
       autoRotate: true,
       autoRotateDelay: 0,
@@ -41,7 +41,6 @@ class ModelViewer extends StatelessWidget {
       cameraControls: false,
       cameraOrbit: '0deg 90deg auto',
       fieldOfView: '10deg',
-
       relatedJs: js,
     );
   }

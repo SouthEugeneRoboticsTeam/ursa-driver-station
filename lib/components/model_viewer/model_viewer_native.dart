@@ -26,7 +26,8 @@ class ModelViewer extends StatefulWidget {
   ModelViewerState createState() => ModelViewerState();
 }
 
-class ModelViewerState extends State<ModelViewer> with AutomaticKeepAliveClientMixin {
+class ModelViewerState extends State<ModelViewer>
+    with AutomaticKeepAliveClientMixin {
   webview.WebViewController? _controller;
 
   DateTime _lastUpdate = DateTime.now();
@@ -41,7 +42,8 @@ class ModelViewerState extends State<ModelViewer> with AutomaticKeepAliveClientM
     }
 
     _lastUpdate = DateTime.now();
-    _controller?.runJavaScript('updateOrientation(0, ${widget.pitch * -1}, ${-widget.yaw - 180})');
+    _controller?.runJavaScript(
+        'updateOrientation(0, ${widget.pitch * -1}, ${-widget.yaw - 180})');
   }
 
   @override
@@ -49,22 +51,20 @@ class ModelViewerState extends State<ModelViewer> with AutomaticKeepAliveClientM
     super.build(context);
 
     return model_viewer.ModelViewer(
-      id: "robot-viewer",
+      id: 'robot-viewer',
       src: 'assets/headbot_transparent.glb',
-      alt: "A model of a robot",
+      alt: 'A model of a robot',
       autoRotate: true,
       autoRotateDelay: 0,
       rotationPerSecond: '5deg',
       cameraControls: false,
       cameraOrbit: '0deg 90deg auto',
       fieldOfView: '10deg',
-
       onWebViewCreated: (webview.WebViewController controller) {
         setState(() {
           _controller = controller;
         });
       },
-
       relatedJs: js,
     );
   }
