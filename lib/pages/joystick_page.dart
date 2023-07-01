@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_joystick/flutter_joystick.dart' as joystick;
 import 'package:provider/provider.dart';
 import 'package:ursa_ds_mobile/domain/connection.dart';
+import 'package:ursa_ds_mobile/domain/dtos/telemetry_message.dart';
 import 'package:ursa_ds_mobile/models/connection_model.dart';
 import 'package:ursa_ds_mobile/models/telemetry_model.dart';
 
@@ -16,6 +17,7 @@ import '../components/model_viewer/model_viewer_stub.dart' // Stub implementatio
     if (dart.library.io) '../components/model_viewer/model_viewer_native.dart' // dart:io implementation
     if (dart.library.html) '../components/model_viewer/model_viewer_web.dart'; // dart:html implementation
 import '../components/status.dart';
+import '../components/telemetry_table.dart';
 
 class JoystickPage extends StatefulWidget {
   const JoystickPage({Key? key}) : super(key: key);
@@ -27,6 +29,7 @@ class JoystickPage extends StatefulWidget {
 class JoystickPageState extends State<JoystickPage> {
   joystick.StickDragDetails? _stickDragDetails;
 
+  TelemetryMessage? _telemetryMessage;
   bool _isEnabled = false;
   double _pitch = 0;
 
@@ -34,10 +37,36 @@ class JoystickPageState extends State<JoystickPage> {
   JoystickPageState() {
     TelemetryModel().addListener(() {
       setState(() {
+        _telemetryMessage = TelemetryModel().telemetryMessage;
         _pitch = TelemetryModel().telemetryMessage?.pitch ?? 0;
         _isEnabled = TelemetryModel().telemetryMessage?.enabled ?? false;
       });
     });
+  }
+
+  Widget getPrimaryBox(
+      bool showModelViewer, ConnectionStatus connectionStatus) {
+    if (showModelViewer) {
+      return DefaultTabController(
+        length: 2,
+        child: TabBarView(
+          children: [
+            AbsorbPointer(
+              child: ModelViewer(
+                  yaw: connectionStatus == ConnectionStatus.connected
+                      ? (_stickDragDetails?.x ?? 0) * 45
+                      : 0,
+                  pitch: connectionStatus == ConnectionStatus.connected
+                      ? -_pitch
+                      : 0),
+            ),
+            TelemetryTable(telemetryMessage: _telemetryMessage),
+          ],
+        ),
+      );
+    } else {
+      return TelemetryTable(telemetryMessage: _telemetryMessage);
+    }
   }
 
   @override
@@ -82,18 +111,11 @@ class JoystickPageState extends State<JoystickPage> {
                           }),
                     ],
                   ),
-                  if (showModelViewer)
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      child: ModelViewer(
-                          yaw: value.status == ConnectionStatus.connected
-                              ? (_stickDragDetails?.x ?? 0) * 45
-                              : 0,
-                          pitch: value.status == ConnectionStatus.connected
-                              ? -_pitch
-                              : 0),
-                    ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: getPrimaryBox(showModelViewer, value.status),
+                  ),
                   Joystick(listener: (joystick.StickDragDetails details) {
                     setState(() {
                       _stickDragDetails = details;
