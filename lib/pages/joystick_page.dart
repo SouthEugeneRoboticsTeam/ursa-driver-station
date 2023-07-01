@@ -13,10 +13,9 @@ import 'package:ursa_ds_mobile/models/telemetry_model.dart';
 import '../components/enable.dart';
 import '../components/joystick/joystick.dart';
 import '../components/model_viewer/model_viewer_stub.dart' // Stub implementation
-  if (dart.library.io) '../components/model_viewer/model_viewer_native.dart' // dart:io implementation
-  if (dart.library.html) '../components/model_viewer/model_viewer_web.dart'; // dart:html implementation
+    if (dart.library.io) '../components/model_viewer/model_viewer_native.dart' // dart:io implementation
+    if (dart.library.html) '../components/model_viewer/model_viewer_web.dart'; // dart:html implementation
 import '../components/status.dart';
-
 
 class JoystickPage extends StatefulWidget {
   const JoystickPage({Key? key}) : super(key: key);
@@ -45,6 +44,7 @@ class JoystickPageState extends State<JoystickPage> {
   Widget build(BuildContext context) {
     // ModelViewer is not supported on desktop (yet)
     bool showModelViewer = Platform.isAndroid || Platform.isIOS || kIsWeb;
+    // bool showModelViewer = false;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,94 +61,100 @@ class JoystickPageState extends State<JoystickPage> {
         ],
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Consumer<ConnectionModel>(builder: (context, value, child) {
-            return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
-              if (constraints.maxWidth < 600) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        StatusIndicator(connectionStatus: value.status, enabled: _isEnabled),
-
-                        const SizedBox(height: 10),
-
-                        SlideToEnable(enabled: _isEnabled, onStateChange: (value) {
-                          setEnabledCommand(value);
-                        }),
-                      ],
+          child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Consumer<ConnectionModel>(builder: (context, value, child) {
+          return LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            if (constraints.maxWidth < 600) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      StatusIndicator(
+                          connectionStatus: value.status, enabled: _isEnabled),
+                      const SizedBox(height: 10),
+                      SlideToEnable(
+                          enabled: _isEnabled,
+                          onStateChange: (value) {
+                            setEnabledCommand(value);
+                          }),
+                    ],
+                  ),
+                  if (showModelViewer)
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      child: ModelViewer(
+                          yaw: value.status == ConnectionStatus.connected
+                              ? (_stickDragDetails?.x ?? 0) * 45
+                              : 0,
+                          pitch: value.status == ConnectionStatus.connected
+                              ? -_pitch
+                              : 0),
                     ),
+                  Joystick(listener: (joystick.StickDragDetails details) {
+                    setState(() {
+                      _stickDragDetails = details;
+                    });
 
-                    if (showModelViewer)
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        child: ModelViewer(
-                          yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
-                          pitch: value.status == ConnectionStatus.connected ? -_pitch : 0
+                    setJoystickCommand(details);
+                  }),
+                ],
+              );
+            } else {
+              // return desktop view
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      StatusIndicator(
+                          connectionStatus: value.status, enabled: _isEnabled),
+                      const SizedBox(height: 10),
+                      SlideToEnable(
+                          height:
+                              clampDouble(constraints.maxHeight / 4, 50, 70),
+                          enabled: _isEnabled,
+                          onStateChange: (value) {
+                            setEnabledCommand(value);
+                          }),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (showModelViewer)
+                        Container(
+                          width: constraints.maxWidth * 0.4,
+                          height: constraints.maxHeight * 0.5,
+                          child: ModelViewer(
+                              yaw: value.status == ConnectionStatus.connected
+                                  ? (_stickDragDetails?.x ?? 0) * 45
+                                  : 0,
+                              pitch: value.status == ConnectionStatus.connected
+                                  ? _pitch
+                                  : 0),
                         ),
-                      ),
+                      if (!showModelViewer) Container(),
+                      Joystick(
+                          size: min(constraints.maxHeight / 2, 200),
+                          listener: (joystick.StickDragDetails details) {
+                            setState(() {
+                              _stickDragDetails = details;
+                            });
 
-                    Joystick(listener: (joystick.StickDragDetails details) {
-                      setState(() {
-                        _stickDragDetails = details;
-                      });
-
-                      setJoystickCommand(details);
-                    }),
-                  ],
-                );
-              } else {
-                // return desktop view
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      children: [
-                        StatusIndicator(connectionStatus: value.status, enabled: _isEnabled),
-
-                        const SizedBox(height: 10),
-
-                        SlideToEnable(height: clampDouble(constraints.maxHeight / 4, 50, 70), enabled: _isEnabled, onStateChange: (value) {
-                          setEnabledCommand(value);
-                        }),
-                      ],
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (showModelViewer)
-                          Container(
-                            width: constraints.maxWidth * 0.4,
-                            height: constraints.maxHeight * 0.5,
-                            child: ModelViewer(
-                              yaw: value.status == ConnectionStatus.connected ? (_stickDragDetails?.x ?? 0) * 45 : 0,
-                              pitch: value.status == ConnectionStatus.connected ? _pitch : 0
-                            ),
-                          ),
-
-                        if (!showModelViewer)
-                          Container(),
-
-                        Joystick(size: min(constraints.maxHeight / 2, 200), listener: (joystick.StickDragDetails details) {
-                          setState(() {
-                            _stickDragDetails = details;
-                          });
-
-                          setJoystickCommand(details);
-                        }),
-                      ],
-                    ),
-                  ],
-                );
-              }
-            });
-          }),
-        )
-      ),
+                            setJoystickCommand(details);
+                          }),
+                    ],
+                  ),
+                ],
+              );
+            }
+          });
+        }),
+      )),
     );
   }
 }
