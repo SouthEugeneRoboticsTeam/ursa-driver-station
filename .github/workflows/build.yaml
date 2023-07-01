@@ -42,6 +42,7 @@ jobs:
       - name: Rename artifact
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
+          ls -R build/app/outputs/flutter-apk
           mkdir gh-release
           cp build/app/outputs/flutter-apk/app-release.apk gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_android.apk
 
@@ -97,6 +98,7 @@ jobs:
       - name: Rename artifact
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
+          ls -R build/linux
           mkdir gh-release
           cp build/linux/URSA.Driver.Station-latest-x86_64.AppImage gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_linux_x64.AppImage
 
@@ -126,9 +128,6 @@ jobs:
       - name: Build Windows package
         run: flutter build windows
 
-      - name: Show builds (debug)
-        run: ls -R build
-
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -138,8 +137,9 @@ jobs:
       - name: Rename artifact
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
+          ls -R build/windows/runner/Release
           mkdir gh-release
-          zip -r gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_windows_x64.zip build/windows/runner/Release
+          Compress-Archive -Path build/windows/runner/Release -Destination gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_windows_x64.zip
 
       - name: Upload release artifact
         uses: softprops/action-gh-release@v1
