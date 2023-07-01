@@ -42,9 +42,6 @@ class ModelViewer extends StatelessWidget {
       cameraOrbit: '0deg 90deg auto',
       fieldOfView: '10deg',
 
-      animationName: 'Dance',
-      autoPlay: true,
-
       relatedJs: js,
     );
   }

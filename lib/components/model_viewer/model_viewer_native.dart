@@ -13,14 +13,6 @@ String js = '''
   window.addEventListener('load', () => {
     // set initial orientation
     updateOrientation(0, 0, -180);
-
-    // clearInterval(window.updateInterval);
-    // window.updateInterval = setInterval(() => {
-    //   modelViewer.model.materials[0].pbrMetallicRoughness.setBaseColorFactor([Math.random(), Math.random(), Math.random()]);
-    //   // modelViewer.model.materials[1].pbrMetallicRoughness.setBaseColorFactor([Math.random(), Math.random(), Math.random()]);
-    //   modelViewer.model.materials[2].pbrMetallicRoughness.setBaseColorFactor([Math.random(), Math.random(), Math.random()]);
-    // }, 500);
-
   });
 ''';
 
@@ -37,10 +29,18 @@ class ModelViewer extends StatefulWidget {
 class ModelViewerState extends State<ModelViewer> with AutomaticKeepAliveClientMixin {
   webview.WebViewController? _controller;
 
+  DateTime _lastUpdate = DateTime.now();
+
   @override
   void didUpdateWidget(covariant ModelViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    // update at most 20Hz
+    if (DateTime.now().difference(_lastUpdate).inMilliseconds < 50) {
+      return;
+    }
+
+    _lastUpdate = DateTime.now();
     _controller?.runJavaScript('updateOrientation(0, ${widget.pitch * -1}, ${-widget.yaw - 180})');
   }
 
@@ -58,9 +58,6 @@ class ModelViewerState extends State<ModelViewer> with AutomaticKeepAliveClientM
       cameraControls: false,
       cameraOrbit: '0deg 90deg auto',
       fieldOfView: '10deg',
-
-      // animationName: 'Dance',
-      // autoPlay: true,
 
       onWebViewCreated: (webview.WebViewController controller) {
         setState(() {
