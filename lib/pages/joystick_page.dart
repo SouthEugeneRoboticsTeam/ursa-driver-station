@@ -146,20 +146,12 @@ class JoystickPageState extends State<JoystickPage> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      if (showModelViewer)
-                        Container(
-                          width: constraints.maxWidth * 0.4,
-                          height: constraints.maxHeight * 0.5,
-                          child: ModelViewer(
-                              yaw: value.status == ConnectionStatus.connected
-                                  ? (_stickDragDetails?.x ?? 0) * 45
-                                  : 0,
-                              pitch: value.status == ConnectionStatus.connected
-                                  ? _pitch
-                                  : 0),
-                        ),
-                      if (!showModelViewer) Container(),
+                      SizedBox(
+                        width: constraints.maxWidth * 0.4,
+                        child: getPrimaryBox(showModelViewer, value.status),
+                      ),
                       Joystick(
                           size: min(constraints.maxHeight / 2, 200),
                           listener: (joystick.StickDragDetails details) {
