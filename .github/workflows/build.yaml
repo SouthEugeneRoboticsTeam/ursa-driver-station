@@ -135,11 +135,18 @@ jobs:
           path: build/windows/runner/Release
 
       - name: Rename artifact
-        if: startsWith(github.ref, 'refs/tags/v')
+        # if: startsWith(github.ref, 'refs/tags/v')
         run: |
           ls -R build/windows/runner/Release
           mkdir gh-release
-          Compress-Archive -Path build/windows/runner/Release -Destination gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_windows_x64.zip
+
+          # Get the tag name by removing "refs/tags/v"
+          $tagName = $env:GITHUB_REF -replace "refs/tags/v", ""
+
+          # Create the archive
+          Compress-Archive -Path build/windows/runner/Release -DestinationPath ("gh-release/URSADriverStation-" + $tagName + "_windows_x64.zip")
+
+          ls -R gh-release
 
       - name: Upload release artifact
         uses: softprops/action-gh-release@v1
