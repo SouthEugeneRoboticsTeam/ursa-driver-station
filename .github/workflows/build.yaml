@@ -36,15 +36,21 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: URSA-Driver-Station_android
+          name: URSADriverStation_android
           path: build/app/outputs/flutter-apk/*.apk
+
+      - name: Rename artifact
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          mkdir gh-release
+          cp build/app/outputs/flutter-apk/app-release.apk gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_android.apk
 
       - name: Upload release artifact
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            build/app/outputs/flutter-apk/*.apk
+            gh-release/*.apk
 
   build-linux:
     name: Build Linux
@@ -85,15 +91,21 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: URSA-Driver-Station_linux64
+          name: URSADriverStation_linux_x64
           path: build/linux/*.AppImage
+
+      - name: Rename artifact
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          mkdir gh-release
+          cp build/linux/URSA.Driver.Station-latest-x86_64.AppImage gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_linux_x64.AppImage
 
       - name: Upload release artifact
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            build/linux/*.AppImage
+            gh-release/*.AppImage
 
   build-windows:
     name: Build Windows
@@ -120,12 +132,18 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: URSA-Driver-Station_win64
+          name: URSADriverStation_windows_x64
           path: build/windows/runner/Release
+
+      - name: Rename artifact
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          mkdir gh-release
+          zip -r gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_windows_x64.zip build/windows/runner/Release
 
       - name: Upload release artifact
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: |
-            build/windows/runner/Release/*.exe
+            gh-release/*.zip
