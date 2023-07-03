@@ -8,6 +8,7 @@ import 'domain/sentry.dart';
 import 'models/connection_model.dart';
 import 'pages/config_page.dart';
 import 'pages/joystick_page.dart';
+import 'pages/pin_page.dart';
 // ignore: unused_import
 import 'theme.dart';
 
@@ -38,6 +39,9 @@ class UrsaApp extends StatelessWidget {
     // bool isDarkMode =
     //     MediaQuery.of(context).platformBrightness == Brightness.dark;
 
+    // TODO: get pin from storage
+    String? pin = '1234';
+
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         // lightDynamic = lightDynamic?.copyWith(
@@ -57,6 +61,8 @@ class UrsaApp extends StatelessWidget {
           routes: {
             '/': (context) => const JoystickPage(),
             '/config': (context) => const ConfigPage(),
+            '/config-auth': (context) =>
+                pin == null ? const ConfigPage() : PinputPage(pin: pin),
           },
         );
       },

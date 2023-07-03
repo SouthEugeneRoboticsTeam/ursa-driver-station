@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_joystick/flutter_joystick.dart' as joystick;
 import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 import '../components/enable.dart';
 import '../components/joystick/joystick.dart';
@@ -75,7 +75,7 @@ class JoystickPageState extends State<JoystickPage> {
   @override
   Widget build(BuildContext context) {
     // ModelViewer is not supported on desktop (yet)
-    bool showModelViewer = Platform.isAndroid || Platform.isIOS || kIsWeb;
+    bool showModelViewer = UniversalPlatform.isAndroid || UniversalPlatform.isIOS || UniversalPlatform.isWeb;
     // bool showModelViewer = false;
 
     return Scaffold(
@@ -87,7 +87,7 @@ class JoystickPageState extends State<JoystickPage> {
             tooltip: 'Open settings',
             onPressed: () {
               // navigate to config_page
-              Navigator.pushNamed(context, '/config');
+              Navigator.pushNamed(context, '/config-auth');
             },
           ),
         ],
@@ -148,7 +148,10 @@ class JoystickPageState extends State<JoystickPage> {
                             const SizedBox(height: 10),
                             SlideToEnable(
                               height: clampDouble(
-                                  constraints.maxHeight / 4, 50, 70,),
+                                constraints.maxHeight / 4,
+                                50,
+                                70,
+                              ),
                               enabled: _isEnabled,
                               onStateChange: (value) {
                                 setEnabledCommand(value);
