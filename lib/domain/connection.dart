@@ -18,8 +18,6 @@ RawDatagramSocket? socket;
 Timer? sendLoop;
 StreamSubscription? subscription;
 
-const interval = Duration(milliseconds: 50); // 20Hz refresh
-
 Future initConnection() async {
   Connectivity()
       .onConnectivityChanged
@@ -61,7 +59,7 @@ void initSendLoop() {
   sendLoop?.cancel();
 
   sendLoop = Timer.periodic(
-      interval,
+      const Duration(milliseconds: 50),
       (Timer t) => SchedulerBinding.instance
           .scheduleTask(() => sendData(commandMessage.getBytes()), Priority.touch));
 }
@@ -114,6 +112,10 @@ void setPidCommand(double angleP, double angleI, double angleD, double speedP, d
 void telemetryMessageListener(TelemetryMessage message) {
   TelemetryModel().setTelemetry(message);
   ConnectionModel().setStatus(ConnectionStatus.connected);
+
+  if (message.enabled != commandMessage.enabled) {
+    setEnabledCommand(message.enabled);
+  }
 
   // Expect a message at least every 2 seconds
   connectionTimeoutTimer?.cancel();

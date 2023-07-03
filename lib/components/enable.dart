@@ -41,6 +41,19 @@ class SlideToEnableState extends State<SlideToEnable>
   late Animation<double> opacityAnimation;
 
   @override
+  void didUpdateWidget(SlideToEnable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.enabled != oldWidget.enabled) {
+      if (widget.enabled) {
+        _dragController.forward();
+      } else {
+        _dragController.reverse();
+      }
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
 
