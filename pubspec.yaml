@@ -48,7 +48,6 @@ dependencies:
       ref: master
   webview_flutter: ^4.2.0
   js: ^0.6.7
-  flutter_blue_plus: ^1.5.2
   sentry_flutter: ^7.7.0
   app_settings: ^4.2.0
   dynamic_color: ^1.6.5
