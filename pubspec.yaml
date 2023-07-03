@@ -51,6 +51,8 @@ dependencies:
   sentry_flutter: ^7.7.0
   app_settings: ^4.2.0
   dynamic_color: ^1.6.5
+  pinput: ^2.2.31
+  universal_platform: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:

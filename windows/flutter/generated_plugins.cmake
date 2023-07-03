@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   dynamic_color
   sentry_flutter
+  smart_auth
   url_launcher_windows
 )
 
