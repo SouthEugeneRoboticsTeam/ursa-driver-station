@@ -5,6 +5,18 @@ import '../domain/connection.dart';
 import '../domain/dtos/telemetry_message.dart';
 import '../models/telemetry_model.dart';
 
+class ConfigParameter {
+  final String label;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+
+  ConfigParameter({
+    required this.label,
+    required this.controller,
+    required this.focusNode,
+  });
+}
+
 class ConfigPage extends StatefulWidget {
   const ConfigPage({Key? key}) : super(key: key);
 
@@ -13,18 +25,57 @@ class ConfigPage extends StatefulWidget {
 }
 
 class ConfigPageState extends State<ConfigPage> {
-  final TextEditingController _anglePController = TextEditingController();
-  final TextEditingController _angleIController = TextEditingController();
-  final TextEditingController _angleDController = TextEditingController();
+  List<ConfigParameter> _angleParameters = [];
+  List<ConfigParameter> _speedParameters = [];
 
-  final TextEditingController _speedPController = TextEditingController();
-  final TextEditingController _speedIController = TextEditingController();
-  final TextEditingController _speedDController = TextEditingController();
-
-  bool hasData = false;
+  bool hasData = true;
 
   ConfigPageState() {
     _telemetryListener(useSetState: false);
+
+    _angleParameters = ["Angle P", "Angle I", "Angle D"]
+        .map((e) => ConfigParameter(
+              label: e,
+              controller: TextEditingController(),
+              focusNode: FocusNode(),
+            ))
+        .toList();
+
+    _speedParameters = ["Speed P", "Speed I", "Speed D"]
+        .map((e) => ConfigParameter(
+              label: e,
+              controller: TextEditingController(),
+              focusNode: FocusNode(),
+            ))
+        .toList();
+
+    // Set up listeners for focus events
+    for (var element in [..._angleParameters, ..._speedParameters]) {
+      element.focusNode.addListener(() {
+        if (!element.focusNode.hasFocus) {
+          _onBlur();
+        }
+      });
+    }
+  }
+
+  Widget _buildConfigSection(List<ConfigParameter> parameters, String title) {
+    return Column(
+      children: [
+        Text(title, style: Theme.of(context).textTheme.headlineSmall),
+        ...parameters
+            .map((e) => TextField(
+                  controller: e.controller,
+                  decoration: InputDecoration(
+                    labelText: e.label,
+                  ),
+                  keyboardType: TextInputType.number,
+                  enabled: hasData,
+                  focusNode: e.focusNode,
+                ))
+            .toList(),
+      ],
+    );
   }
 
   @override
@@ -40,62 +91,14 @@ class ConfigPageState extends State<ConfigPage> {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: [
-                    Text(AppLocalizations.of(context)!.angleConfig,
-                        style: Theme.of(context).textTheme.headlineSmall),
-                    TextField(
-                      controller: _anglePController,
-                      decoration: const InputDecoration(
-                        labelText: "Angle P",
-                      ),
-                      keyboardType: TextInputType.number,
-                      enabled: hasData,
-                    ),
-                    TextField(
-                      controller: _angleIController,
-                      decoration: const InputDecoration(
-                        labelText: "Angle I",
-                      ),
-                      keyboardType: TextInputType.number,
-                      enabled: hasData,
-                    ),
-                    TextField(
-                      controller: _angleDController,
-                      decoration: const InputDecoration(
-                        labelText: "Angle D",
-                      ),
-                      keyboardType: TextInputType.number,
-                      enabled: hasData,
-                    ),
+                    _buildConfigSection(_angleParameters,
+                        AppLocalizations.of(context)!.angleConfig),
 
                     // 20px spacer
                     const SizedBox(height: 20),
 
-                    Text(AppLocalizations.of(context)!.speedConfig,
-                        style: Theme.of(context).textTheme.headlineSmall),
-                    TextField(
-                      controller: _speedPController,
-                      decoration: const InputDecoration(
-                        labelText: "Angle P",
-                      ),
-                      keyboardType: TextInputType.number,
-                      enabled: hasData,
-                    ),
-                    TextField(
-                      controller: _speedIController,
-                      decoration: const InputDecoration(
-                        labelText: "Angle I",
-                      ),
-                      keyboardType: TextInputType.number,
-                      enabled: hasData,
-                    ),
-                    TextField(
-                      controller: _speedDController,
-                      decoration: const InputDecoration(
-                        labelText: "Angle D",
-                      ),
-                      keyboardType: TextInputType.number,
-                      enabled: hasData,
-                    ),
+                    _buildConfigSection(_speedParameters,
+                        AppLocalizations.of(context)!.speedConfig),
 
                     // 20px spacer
                     const SizedBox(height: 20),
@@ -113,14 +116,33 @@ class ConfigPageState extends State<ConfigPage> {
                 ))));
   }
 
-  void _saveConfig(BuildContext context) {
+  void _onBlur() {
+    List<double> angleValues = _angleParameters.map((parameter) => _getParsedValue(parameter.controller.text)).toList();
+    List<double> speedValues = _speedParameters.map((parameter) => _getParsedValue(parameter.controller.text)).toList();
+
     setPidCommand(
-      double.parse(_anglePController.text),
-      double.parse(_angleIController.text),
-      double.parse(_angleDController.text),
-      double.parse(_speedPController.text),
-      double.parse(_speedIController.text),
-      double.parse(_speedDController.text),
+      angleValues[0],
+      angleValues[1],
+      angleValues[2],
+      speedValues[0],
+      speedValues[1],
+      speedValues[2],
+      save: false,
+    );
+  }
+
+  void _saveConfig(BuildContext context) {
+    List<double> angleValues = _angleParameters.map((parameter) => _getParsedValue(parameter.controller.text)).toList();
+    List<double> speedValues = _speedParameters.map((parameter) => _getParsedValue(parameter.controller.text)).toList();
+
+    setPidCommand(
+      angleValues[0],
+      angleValues[1],
+      angleValues[2],
+      speedValues[0],
+      speedValues[1],
+      speedValues[2],
+      save: true,
     );
 
     final scaffold = ScaffoldMessenger.of(context);
@@ -140,19 +162,13 @@ class ConfigPageState extends State<ConfigPage> {
   void _telemetryListener({bool useSetState = true}) {
     TelemetryMessage? message = TelemetryModel().telemetryMessage;
     if (message != null && message.containsPid) {
-      _anglePController.text =
-          num.parse(message.angleP.toStringAsFixed(6)).toString();
-      _angleIController.text =
-          num.parse(message.angleI.toStringAsFixed(6)).toString();
-      _angleDController.text =
-          num.parse(message.angleD.toStringAsFixed(6)).toString();
+      _angleParameters[0].controller.text = num.parse(message.angleP.toStringAsFixed(6)).toString();
+      _angleParameters[1].controller.text = num.parse(message.angleI.toStringAsFixed(6)).toString();
+      _angleParameters[2].controller.text = num.parse(message.angleD.toStringAsFixed(6)).toString();
 
-      _speedPController.text =
-          num.parse(message.speedP.toStringAsFixed(6)).toString();
-      _speedIController.text =
-          num.parse(message.speedI.toStringAsFixed(6)).toString();
-      _speedDController.text =
-          num.parse(message.speedD.toStringAsFixed(6)).toString();
+      _speedParameters[0].controller.text = num.parse(message.speedP.toStringAsFixed(6)).toString();
+      _speedParameters[1].controller.text = num.parse(message.speedI.toStringAsFixed(6)).toString();
+      _speedParameters[2].controller.text = num.parse(message.speedD.toStringAsFixed(6)).toString();
 
       if (useSetState) {
         setState(() {
@@ -165,5 +181,9 @@ class ConfigPageState extends State<ConfigPage> {
       // Remove self
       TelemetryModel().removeListener(_telemetryListener);
     }
+  }
+
+  double _getParsedValue(String text) {
+    return double.tryParse(text) ?? 0.0;
   }
 }

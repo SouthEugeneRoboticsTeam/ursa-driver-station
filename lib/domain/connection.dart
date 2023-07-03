@@ -19,9 +19,7 @@ Timer? sendLoop;
 StreamSubscription? subscription;
 
 Future initConnection() async {
-  Connectivity()
-      .onConnectivityChanged
-      .listen(connectivityChangedListener);
+  Connectivity().onConnectivityChanged.listen(connectivityChangedListener);
 
   Timer.periodic(const Duration(seconds: 5), (_) async {
     ConnectivityResult result = await Connectivity().checkConnectivity();
@@ -41,7 +39,9 @@ Future connectivityChangedListener(ConnectivityResult result) async {
     TelemetryMessage? latestMessage = TelemetryModel().telemetryMessage;
 
     // if telemetryMessage is older than 2 seconds...
-    if (latestMessage == null || latestMessage.messageTime.isBefore(DateTime.now().subtract(const Duration(seconds: 2)))) {
+    if (latestMessage == null ||
+        latestMessage.messageTime
+            .isBefore(DateTime.now().subtract(const Duration(seconds: 2)))) {
       ConnectionModel().setStatus(ConnectionStatus.networkConnected);
     }
   } else {
@@ -60,8 +60,8 @@ void initSendLoop() {
 
   sendLoop = Timer.periodic(
       const Duration(milliseconds: 50),
-      (Timer t) => SchedulerBinding.instance
-          .scheduleTask(() => sendData(commandMessage.getBytes()), Priority.touch));
+      (Timer t) => SchedulerBinding.instance.scheduleTask(
+          () => sendData(commandMessage.getBytes()), Priority.touch));
 }
 
 void receiveData(Function(TelemetryMessage) onDataReceived) async {
@@ -97,9 +97,11 @@ void setJoystickCommand(StickDragDetails details) {
   commandMessage.turn = (details.x * 100).round();
 }
 
-void setPidCommand(double angleP, double angleI, double angleD, double speedP, double speedI, double speedD) {
+void setPidCommand(double angleP, double angleI, double angleD, double speedP,
+    double speedI, double speedD,
+    {bool save = false}) {
   commandMessage.advanced = true;
-  commandMessage.saveRecallState = 2;
+  commandMessage.saveRecallState = save ? 2 : 1;
 
   commandMessage.angleP = angleP;
   commandMessage.angleI = angleI;
