@@ -3,7 +3,7 @@ version: 1
 AppDir:
   path: ./AppDir
   app_info:
-    id: org.sert2521.ursa_ds
+    id: org.sert2521.ursa-driver-station
     name: URSA Driver Station
     icon: application-vnd.appimage
     version: latest

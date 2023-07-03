@@ -1,4 +1,4 @@
-package org.sert2521.ursa_ds_mobile
+package org.sert2521.ursa_driver_station
 
 import io.flutter.embedding.android.FlutterActivity
 
