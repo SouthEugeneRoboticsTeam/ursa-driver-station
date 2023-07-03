@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ursa_ds_mobile/models/connection_model.dart';
+
+import '../models/connection_model.dart';
 
 Map<ConnectionStatus, Color> colorMap = {
   ConnectionStatus.connected: Colors.green.shade300,

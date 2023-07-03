@@ -1,12 +1,11 @@
 import 'dart:math';
 
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../theme.dart';
 import 'animations/animated_text.dart';
 import 'animations/colorize.dart';
-import 'package:ursa_ds_mobile/theme.dart';
 
 class SlideToEnable extends StatefulWidget {
   final bool enabled;

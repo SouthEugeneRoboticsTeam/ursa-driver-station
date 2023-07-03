@@ -8,6 +8,10 @@
   "enabled": "Habilitado",
   "disabled": "Deshabilitado",
 
+  "slideToEnable": "Desliza para habilitar",
+  "tapToDisable": "Toca para deshabilitar",
+  "enabling": "Habilitando...",
+
   "config": "Configuración",
   "angleConfig": "Configuración de PID de ángulo",
   "speedConfig": "Configuración de PID de velocidad",

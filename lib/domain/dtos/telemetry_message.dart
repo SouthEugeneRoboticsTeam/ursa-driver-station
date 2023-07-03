@@ -24,26 +24,26 @@ class TelemetryMessage {
 
   DateTime messageTime = DateTime.now();
 
-  TelemetryMessage(List<int> bytes) {
-    this.bytes = bytes;
+  TelemetryMessage(List<int> input) {
+    bytes = input;
 
-    var buffer = Uint8List.fromList(bytes).buffer;
+    var buffer = Uint8List.fromList(input).buffer;
     var data = ByteData.view(buffer);
 
-    enabled = bytes[0] == 1;
-    tipped = bytes[1] == 1;
-    robotId = bytes[2];
-    modelNumber = bytes[3];
+    enabled = input[0] == 1;
+    tipped = input[1] == 1;
+    robotId = input[2];
+    modelNumber = input[3];
 
     pitch = data.getFloat32(4, Endian.little);
-    voltage = bytes[8];
+    voltage = input[8];
     leftMotorSpeed = data.getInt32(9, Endian.little);
     rightMotorSpeed = data.getInt32(13, Endian.little);
     pitchTarget = data.getFloat32(17, Endian.little);
     pitchOffset = data.getFloat32(21, Endian.little);
 
-    auxLength = bytes[25];
-    containsPid = bytes[26] == 1;
+    auxLength = input[25];
+    containsPid = input[26] == 1;
 
     if (containsPid) {
       angleP = data.getFloat32(27, Endian.little);

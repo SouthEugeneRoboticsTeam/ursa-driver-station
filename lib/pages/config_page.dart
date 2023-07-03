@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:ursa_ds_mobile/domain/connection.dart';
-import 'package:ursa_ds_mobile/domain/dtos/telemetry_message.dart';
-import 'package:ursa_ds_mobile/models/telemetry_model.dart';
+
+import '../domain/connection.dart';
+import '../domain/dtos/telemetry_message.dart';
+import '../models/telemetry_model.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({Key? key}) : super(key: key);

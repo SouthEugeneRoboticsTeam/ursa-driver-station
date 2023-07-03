@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -132,10 +131,10 @@ class AnimatedTextKit extends StatefulWidget {
 
   /// Creates the mutable state for this widget. See [StatefulWidget.createState].
   @override
-  _AnimatedTextKitState createState() => _AnimatedTextKitState();
+  AnimatedTextKitState createState() => AnimatedTextKitState();
 }
 
-class _AnimatedTextKitState extends State<AnimatedTextKit>
+class AnimatedTextKitState extends State<AnimatedTextKit>
     with TickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -144,8 +143,6 @@ class _AnimatedTextKitState extends State<AnimatedTextKit>
   int _currentRepeatCount = 0;
 
   int _index = 0;
-
-  bool _isCurrentlyPausing = false;
 
   Timer? _timer;
 
@@ -176,8 +173,6 @@ class _AnimatedTextKitState extends State<AnimatedTextKit>
 
   void _nextAnimation() {
     final isLast = _isLast;
-
-    _isCurrentlyPausing = false;
 
     // Handling onNext callback
     widget.onNext?.call(_index, isLast);
@@ -224,7 +219,6 @@ class _AnimatedTextKitState extends State<AnimatedTextKit>
   void _setPause() {
     final isLast = _isLast;
 
-    _isCurrentlyPausing = true;
     if (mounted) setState(() {});
 
     // Handle onNextBeforePause callback
@@ -237,37 +231,5 @@ class _AnimatedTextKitState extends State<AnimatedTextKit>
       assert(null == _timer || !_timer!.isActive);
       _timer = Timer(widget.pause, _nextAnimation);
     }
-  }
-
-  void _onTap() {
-    if (widget.displayFullTextOnTap) {
-      if (_isCurrentlyPausing) {
-        if (widget.stopPauseOnTap) {
-          _timer?.cancel();
-          _nextAnimation();
-        }
-      } else {
-        final left =
-            (_currentAnimatedText.remaining ?? _currentAnimatedText.duration)
-                .inMilliseconds;
-
-        _controller.stop();
-
-        _setPause();
-
-        assert(null == _timer || !_timer!.isActive);
-        _timer = Timer(
-          Duration(
-            milliseconds: max(
-              widget.pause.inMilliseconds,
-              left,
-            ),
-          ),
-          _nextAnimation,
-        );
-      }
-    }
-
-    widget.onTap?.call();
   }
 }

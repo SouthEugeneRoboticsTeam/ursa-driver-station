@@ -6,10 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_joystick/flutter_joystick.dart' as joystick;
 import 'package:provider/provider.dart';
-import 'package:ursa_ds_mobile/domain/connection.dart';
-import 'package:ursa_ds_mobile/domain/dtos/telemetry_message.dart';
-import 'package:ursa_ds_mobile/models/connection_model.dart';
-import 'package:ursa_ds_mobile/models/telemetry_model.dart';
 
 import '../components/enable.dart';
 import '../components/joystick/joystick.dart';
@@ -18,6 +14,10 @@ import '../components/model_viewer/model_viewer_stub.dart' // Stub implementatio
     if (dart.library.html) '../components/model_viewer/model_viewer_web.dart'; // dart:html implementation
 import '../components/status.dart';
 import '../components/telemetry_table.dart';
+import '../domain/connection.dart';
+import '../domain/dtos/telemetry_message.dart';
+import '../models/connection_model.dart';
+import '../models/telemetry_model.dart';
 
 class JoystickPage extends StatefulWidget {
   const JoystickPage({Key? key}) : super(key: key);

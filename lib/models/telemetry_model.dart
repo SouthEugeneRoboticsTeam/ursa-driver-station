@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ursa_ds_mobile/domain/dtos/telemetry_message.dart';
+
+import '../domain/dtos/telemetry_message.dart';
 
 class TelemetryModel extends ChangeNotifier {
   static final TelemetryModel _instance = TelemetryModel._internal();

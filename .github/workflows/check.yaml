@@ -1,0 +1,54 @@
+name: Check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+      - 'build/*'
+    tags:
+      - 'v*'
+    paths-ignore:
+      - '**.md'
+
+env:
+  FLUTTER_VERSION: 3.10.5
+
+jobs:
+  analyze:
+    name: Run flutter analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '${{ env.FLUTTER_VERSION }}'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run flutter analyze
+        run: flutter analyze --no-fatal-infos
+
+  check-translations:
+    name: Check translations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '${{ env.FLUTTER_VERSION }}'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check translations
+        run: ./scripts/check-translations.sh

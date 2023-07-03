@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
-import 'package:ursa_ds_mobile/domain/dtos/command_message.dart';
-import 'package:ursa_ds_mobile/domain/dtos/telemetry_message.dart';
-import 'package:ursa_ds_mobile/domain/networking.dart';
 
 import '../models/connection_model.dart';
 import '../models/telemetry_model.dart';
+import 'dtos/command_message.dart';
+import 'dtos/telemetry_message.dart';
+import 'networking.dart';
 
 CommandMessage commandMessage = CommandMessage();
 Timer? connectionTimeoutTimer;

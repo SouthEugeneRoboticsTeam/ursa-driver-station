@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ursa_ds_mobile/domain/dtos/telemetry_message.dart';
+
+import '../domain/dtos/telemetry_message.dart';
 
 class TelemetryTable extends StatelessWidget {
   final TelemetryMessage? telemetryMessage;

@@ -2,14 +2,13 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:ursa_ds_mobile/pages/config_page.dart';
 
 import 'domain/connection.dart';
-import 'domain/networking.dart';
 import 'domain/sentry.dart';
 import 'models/connection_model.dart';
+import 'pages/config_page.dart';
 import 'pages/joystick_page.dart';
-
+// ignore: unused_import
 import 'theme.dart';
 
 void main() async {
@@ -24,11 +23,6 @@ void main() async {
           child: const UrsaApp(),
         ),
       ));
-
-  // BluetoothProvider().getConnectedDevices();
-  // BluetoothProvider().getBondedDevices();
-
-  // BluetoothProvider().doSomething();
 
   initConnection();
 }
@@ -55,6 +49,7 @@ class UrsaApp extends StatelessWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         themeMode: ThemeMode.system,
         theme: ThemeData(
+          // ignore: dead_code
           colorScheme: isDarkMode ? darkDynamic : lightDynamic,
           useMaterial3: true,
         ),

@@ -59,7 +59,7 @@ class BluetoothProvider {
     print('# devices: ${devices.length}');
     for (BluetoothDevice device in devices) {
       var state = await device.state.first;
-      print('Bonded: ${device.name}, ${device.id}, ${device.type}, ${state}');
+      print('Bonded: ${device.name}, ${device.id}, ${device.type}, $state');
     }
   }
 

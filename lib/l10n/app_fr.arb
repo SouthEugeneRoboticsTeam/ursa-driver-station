@@ -8,6 +8,10 @@
   "enabled": "Activé",
   "disabled": "Désactivé",
 
+  "slideToEnable": "Glisser pour activer",
+  "tapToDisable": "Taper pour désactiver",
+  "enabling": "Activation...",
+
   "config": "Config",
   "angleConfig": "Configuration PID d'angle",
   "speedConfig": "Configuration PID de vitesse",
