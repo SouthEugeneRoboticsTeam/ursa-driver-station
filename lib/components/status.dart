@@ -19,13 +19,13 @@ class StatusIndicator extends StatelessWidget {
   final double? width;
   final double? height;
 
-  const StatusIndicator(
-      {super.key,
-      required this.connectionStatus,
-      required enabled,
-      this.width,
-      this.height = 50})
-      : enabled = connectionStatus == ConnectionStatus.connected && enabled;
+  const StatusIndicator({
+    super.key,
+    required this.connectionStatus,
+    required enabled,
+    this.width,
+    this.height = 50,
+  }) : enabled = connectionStatus == ConnectionStatus.connected && enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +64,10 @@ class StatusIndicator extends StatelessWidget {
                   connectionText,
                   key: ValueKey(connectionText),
                   style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -86,10 +87,11 @@ class StatusIndicator extends StatelessWidget {
           width: width ?? min(MediaQuery.of(context).size.width * 0.4, 180),
           height: height,
           decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius:
-                  const BorderRadius.horizontal(right: Radius.circular(8)),
-              color: enabled ? Colors.green[300] : Colors.red[300]),
+            shape: BoxShape.rectangle,
+            borderRadius:
+                const BorderRadius.horizontal(right: Radius.circular(8)),
+            color: enabled ? Colors.green[300] : Colors.red[300],
+          ),
           child: Center(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 100),
@@ -100,9 +102,10 @@ class StatusIndicator extends StatelessWidget {
                 enabledText,
                 key: ValueKey(enabledText),
                 style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

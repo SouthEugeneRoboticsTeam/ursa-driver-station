@@ -58,41 +58,49 @@ class _JoystickBasePainter extends CustomPainter {
     if (mode != JoystickMode.horizontal) {
       // draw vertical arrows
       canvas.drawLine(
-          Offset(center.dx - 30 * multiplier, center.dy - 50 * multiplier),
-          Offset(center.dx + 1, center.dy - 70 * multiplier),
-          linePaint);
+        Offset(center.dx - 30 * multiplier, center.dy - 50 * multiplier),
+        Offset(center.dx + 1, center.dy - 70 * multiplier),
+        linePaint,
+      );
       canvas.drawLine(
-          Offset(center.dx + 30 * multiplier, center.dy - 50 * multiplier),
-          Offset(center.dx - 1, center.dy - 70 * multiplier),
-          linePaint);
+        Offset(center.dx + 30 * multiplier, center.dy - 50 * multiplier),
+        Offset(center.dx - 1, center.dy - 70 * multiplier),
+        linePaint,
+      );
       canvas.drawLine(
-          Offset(center.dx - 30 * multiplier, center.dy + 50 * multiplier),
-          Offset(center.dx + 1, center.dy + 70 * multiplier),
-          linePaint);
+        Offset(center.dx - 30 * multiplier, center.dy + 50 * multiplier),
+        Offset(center.dx + 1, center.dy + 70 * multiplier),
+        linePaint,
+      );
       canvas.drawLine(
-          Offset(center.dx + 30 * multiplier, center.dy + 50 * multiplier),
-          Offset(center.dx - 1, center.dy + 70 * multiplier),
-          linePaint);
+        Offset(center.dx + 30 * multiplier, center.dy + 50 * multiplier),
+        Offset(center.dx - 1, center.dy + 70 * multiplier),
+        linePaint,
+      );
     }
 
     if (mode != JoystickMode.vertical) {
       // draw horizontal arrows
       canvas.drawLine(
-          Offset(center.dx - 50 * multiplier, center.dy - 30 * multiplier),
-          Offset(center.dx - 70 * multiplier, center.dy + 1),
-          linePaint);
+        Offset(center.dx - 50 * multiplier, center.dy - 30 * multiplier),
+        Offset(center.dx - 70 * multiplier, center.dy + 1),
+        linePaint,
+      );
       canvas.drawLine(
-          Offset(center.dx - 50 * multiplier, center.dy + 30 * multiplier),
-          Offset(center.dx - 70 * multiplier, center.dy - 1),
-          linePaint);
+        Offset(center.dx - 50 * multiplier, center.dy + 30 * multiplier),
+        Offset(center.dx - 70 * multiplier, center.dy - 1),
+        linePaint,
+      );
       canvas.drawLine(
-          Offset(center.dx + 50 * multiplier, center.dy - 30 * multiplier),
-          Offset(center.dx + 70 * multiplier, center.dy + 1),
-          linePaint);
+        Offset(center.dx + 50 * multiplier, center.dy - 30 * multiplier),
+        Offset(center.dx + 70 * multiplier, center.dy + 1),
+        linePaint,
+      );
       canvas.drawLine(
-          Offset(center.dx + 50 * multiplier, center.dy + 30 * multiplier),
-          Offset(center.dx + 70 * multiplier, center.dy - 1),
-          linePaint);
+        Offset(center.dx + 50 * multiplier, center.dy + 30 * multiplier),
+        Offset(center.dx + 70 * multiplier, center.dy - 1),
+        linePaint,
+      );
     }
   }
 

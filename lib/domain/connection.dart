@@ -59,9 +59,12 @@ void initSendLoop() {
   sendLoop?.cancel();
 
   sendLoop = Timer.periodic(
-      const Duration(milliseconds: 50),
-      (Timer t) => SchedulerBinding.instance.scheduleTask(
-          () => sendData(commandMessage.getBytes()), Priority.touch));
+    const Duration(milliseconds: 50),
+    (Timer t) => SchedulerBinding.instance.scheduleTask(
+      () => sendData(commandMessage.getBytes()),
+      Priority.touch,
+    ),
+  );
 }
 
 void receiveData(Function(TelemetryMessage) onDataReceived) async {
@@ -84,7 +87,7 @@ void sendData(List<int> message) {
     socket?.send(message, robotAddress, robotPort);
     commandMessage.saveRecallState = 1;
   } catch (e) {
-    print("Could not send data, ensure robot is connected");
+    print('Could not send data, ensure robot is connected');
   }
 }
 
@@ -97,9 +100,15 @@ void setJoystickCommand(StickDragDetails details) {
   commandMessage.turn = (details.x * 100).round();
 }
 
-void setPidCommand(double angleP, double angleI, double angleD, double speedP,
-    double speedI, double speedD,
-    {bool save = false}) {
+void setPidCommand(
+  double angleP,
+  double angleI,
+  double angleD,
+  double speedP,
+  double speedI,
+  double speedD, {
+  bool save = false,
+}) {
   commandMessage.advanced = true;
   commandMessage.saveRecallState = save ? 2 : 1;
 

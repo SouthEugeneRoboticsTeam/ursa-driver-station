@@ -15,14 +15,16 @@ void main() async {
   // ensure initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  initSentry(() => runApp(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => ConnectionModel()),
-          ],
-          child: const UrsaApp(),
-        ),
-      ));
+  initSentry(
+    () => runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => ConnectionModel()),
+        ],
+        child: const UrsaApp(),
+      ),
+    ),
+  );
 
   initConnection();
 }
@@ -37,27 +39,27 @@ class UrsaApp extends StatelessWidget {
     //     MediaQuery.of(context).platformBrightness == Brightness.dark;
 
     return DynamicColorBuilder(
-        builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        // lightDynamic = lightDynamic?.copyWith(
+        //   background: lightDynamic?.
+        // );
 
-      // lightDynamic = lightDynamic?.copyWith(
-      //   background: lightDynamic?.
-      // );
-
-      return MaterialApp(
-        title: AppLocalizations.of(context)?.title ?? 'URSA Driver Station',
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        themeMode: ThemeMode.system,
-        theme: ThemeData(
-          // ignore: dead_code
-          colorScheme: isDarkMode ? darkDynamic : lightDynamic,
-          useMaterial3: true,
-        ),
-        routes: {
-          '/': (context) => const JoystickPage(),
-          '/config': (context) => const ConfigPage(),
-        },
-      );
-    });
+        return MaterialApp(
+          title: AppLocalizations.of(context)?.title ?? 'URSA Driver Station',
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          themeMode: ThemeMode.system,
+          theme: ThemeData(
+            // ignore: dead_code
+            colorScheme: isDarkMode ? darkDynamic : lightDynamic,
+            useMaterial3: true,
+          ),
+          routes: {
+            '/': (context) => const JoystickPage(),
+            '/config': (context) => const ConfigPage(),
+          },
+        );
+      },
+    );
   }
 }

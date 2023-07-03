@@ -10,9 +10,11 @@ class TelemetryTable extends StatelessWidget {
   TableRow createTableRow(String label, String value) {
     return TableRow(
       children: <Widget>[
-        Text(label,
-            textAlign: TextAlign.right,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        Text(
+          label,
+          textAlign: TextAlign.right,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
         const SizedBox(),
         Text(value, style: const TextStyle(fontSize: 18)),
       ],

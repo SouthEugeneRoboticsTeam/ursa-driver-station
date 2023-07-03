@@ -43,7 +43,8 @@ class ModelViewerState extends State<ModelViewer>
 
     _lastUpdate = DateTime.now();
     _controller?.runJavaScript(
-        'updateOrientation(0, ${widget.pitch * -1}, ${-widget.yaw - 180})');
+      'updateOrientation(0, ${widget.pitch * -1}, ${-widget.yaw - 180})',
+    );
   }
 
   @override

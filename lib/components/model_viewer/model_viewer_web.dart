@@ -32,9 +32,9 @@ class ModelViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return model_viewer.ModelViewer(
-      id: "robot-viewer",
+      id: 'robot-viewer',
       src: 'assets/headbot_transparent.glb',
-      alt: "A model of a robot",
+      alt: 'A model of a robot',
       autoRotate: true,
       autoRotateDelay: 0,
       rotationPerSecond: '5deg',

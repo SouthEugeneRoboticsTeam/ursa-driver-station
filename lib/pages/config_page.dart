@@ -33,20 +33,24 @@ class ConfigPageState extends State<ConfigPage> {
   ConfigPageState() {
     _telemetryListener(useSetState: false);
 
-    _angleParameters = ["Angle P", "Angle I", "Angle D"]
-        .map((e) => ConfigParameter(
-              label: e,
-              controller: TextEditingController(),
-              focusNode: FocusNode(),
-            ))
+    _angleParameters = ['Angle P', 'Angle I', 'Angle D']
+        .map(
+          (e) => ConfigParameter(
+            label: e,
+            controller: TextEditingController(),
+            focusNode: FocusNode(),
+          ),
+        )
         .toList();
 
-    _speedParameters = ["Speed P", "Speed I", "Speed D"]
-        .map((e) => ConfigParameter(
-              label: e,
-              controller: TextEditingController(),
-              focusNode: FocusNode(),
-            ))
+    _speedParameters = ['Speed P', 'Speed I', 'Speed D']
+        .map(
+          (e) => ConfigParameter(
+            label: e,
+            controller: TextEditingController(),
+            focusNode: FocusNode(),
+          ),
+        )
         .toList();
 
     // Set up listeners for focus events
@@ -64,15 +68,17 @@ class ConfigPageState extends State<ConfigPage> {
       children: [
         Text(title, style: Theme.of(context).textTheme.headlineSmall),
         ...parameters
-            .map((e) => TextField(
-                  controller: e.controller,
-                  decoration: InputDecoration(
-                    labelText: e.label,
-                  ),
-                  keyboardType: TextInputType.number,
-                  enabled: hasData,
-                  focusNode: e.focusNode,
-                ))
+            .map(
+              (e) => TextField(
+                controller: e.controller,
+                decoration: InputDecoration(
+                  labelText: e.label,
+                ),
+                keyboardType: TextInputType.number,
+                enabled: hasData,
+                focusNode: e.focusNode,
+              ),
+            )
             .toList(),
       ],
     );
@@ -81,44 +87,55 @@ class ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.config),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.config),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            children: [
+              _buildConfigSection(
+                _angleParameters,
+                AppLocalizations.of(context)!.angleConfig,
+              ),
+
+              // 20px spacer
+              const SizedBox(height: 20),
+
+              _buildConfigSection(
+                _speedParameters,
+                AppLocalizations.of(context)!.speedConfig,
+              ),
+
+              // 20px spacer
+              const SizedBox(height: 20),
+
+              // save button
+              ElevatedButton(
+                onPressed: hasData
+                    ? () {
+                        _saveConfig(context);
+                      }
+                    : null,
+                child: Text(AppLocalizations.of(context)!.save),
+              ),
+            ],
+          ),
         ),
-        body: SingleChildScrollView(
-            child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  children: [
-                    _buildConfigSection(_angleParameters,
-                        AppLocalizations.of(context)!.angleConfig),
-
-                    // 20px spacer
-                    const SizedBox(height: 20),
-
-                    _buildConfigSection(_speedParameters,
-                        AppLocalizations.of(context)!.speedConfig),
-
-                    // 20px spacer
-                    const SizedBox(height: 20),
-
-                    // save button
-                    ElevatedButton(
-                      onPressed: hasData
-                          ? () {
-                              _saveConfig(context);
-                            }
-                          : null,
-                      child: Text(AppLocalizations.of(context)!.save),
-                    ),
-                  ],
-                ))));
+      ),
+    );
   }
 
   void _onBlur() {
-    List<double> angleValues = _angleParameters.map((parameter) => _getParsedValue(parameter.controller.text)).toList();
-    List<double> speedValues = _speedParameters.map((parameter) => _getParsedValue(parameter.controller.text)).toList();
+    List<double> angleValues = _angleParameters
+        .map((parameter) => _getParsedValue(parameter.controller.text))
+        .toList();
+    List<double> speedValues = _speedParameters
+        .map((parameter) => _getParsedValue(parameter.controller.text))
+        .toList();
 
     setPidCommand(
       angleValues[0],
@@ -132,8 +149,12 @@ class ConfigPageState extends State<ConfigPage> {
   }
 
   void _saveConfig(BuildContext context) {
-    List<double> angleValues = _angleParameters.map((parameter) => _getParsedValue(parameter.controller.text)).toList();
-    List<double> speedValues = _speedParameters.map((parameter) => _getParsedValue(parameter.controller.text)).toList();
+    List<double> angleValues = _angleParameters
+        .map((parameter) => _getParsedValue(parameter.controller.text))
+        .toList();
+    List<double> speedValues = _speedParameters
+        .map((parameter) => _getParsedValue(parameter.controller.text))
+        .toList();
 
     setPidCommand(
       angleValues[0],
@@ -162,13 +183,19 @@ class ConfigPageState extends State<ConfigPage> {
   void _telemetryListener({bool useSetState = true}) {
     TelemetryMessage? message = TelemetryModel().telemetryMessage;
     if (message != null && message.containsPid) {
-      _angleParameters[0].controller.text = num.parse(message.angleP.toStringAsFixed(6)).toString();
-      _angleParameters[1].controller.text = num.parse(message.angleI.toStringAsFixed(6)).toString();
-      _angleParameters[2].controller.text = num.parse(message.angleD.toStringAsFixed(6)).toString();
+      _angleParameters[0].controller.text =
+          num.parse(message.angleP.toStringAsFixed(6)).toString();
+      _angleParameters[1].controller.text =
+          num.parse(message.angleI.toStringAsFixed(6)).toString();
+      _angleParameters[2].controller.text =
+          num.parse(message.angleD.toStringAsFixed(6)).toString();
 
-      _speedParameters[0].controller.text = num.parse(message.speedP.toStringAsFixed(6)).toString();
-      _speedParameters[1].controller.text = num.parse(message.speedI.toStringAsFixed(6)).toString();
-      _speedParameters[2].controller.text = num.parse(message.speedD.toStringAsFixed(6)).toString();
+      _speedParameters[0].controller.text =
+          num.parse(message.speedP.toStringAsFixed(6)).toString();
+      _speedParameters[1].controller.text =
+          num.parse(message.speedI.toStringAsFixed(6)).toString();
+      _speedParameters[2].controller.text =
+          num.parse(message.speedD.toStringAsFixed(6)).toString();
 
       if (useSetState) {
         setState(() {
