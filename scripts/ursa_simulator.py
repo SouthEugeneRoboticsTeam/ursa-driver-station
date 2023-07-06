@@ -2,7 +2,18 @@ import socket
 import argparse
 
 def handle_command_packet(packet):
-    # Parse the command packet and update the state of the simulated robot
+    # Assuming packet is a dictionary with 'command' and 'params' keys
+    command = packet.get('command')
+    params = packet.get('params')
+
+    # Update the state of the simulated robot based on the command
+    if command == 'change_direction':
+        # Assuming robot_state is a global variable or accessible in some way
+        robot_state['direction'] = params.get('direction')
+    elif command == 'change_speed':
+        robot_state['speed'] = params.get('speed')
+    else:
+        print(f"Unknown command: {command}")
     pass
 
 def generate_telemetry_packet():
@@ -24,3 +35,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
