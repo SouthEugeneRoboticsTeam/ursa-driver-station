@@ -73,10 +73,12 @@ void initSendLoop() {
       bool messageChanged = commandMessage != _previousCommandMessage;
       bool messageSentRecently = lastMessageSend != null &&
           lastMessageSend!.isAfter(
-              DateTime.now().subtract(const Duration(milliseconds: 20)));
+            DateTime.now().subtract(const Duration(milliseconds: 20)),
+          );
       bool messageSentLongAgo = lastMessageSend == null ||
           lastMessageSend!.isBefore(
-              DateTime.now().subtract(const Duration(milliseconds: 500)));
+            DateTime.now().subtract(const Duration(milliseconds: 500)),
+          );
 
       if ((messageChanged && !messageSentRecently) || messageSentLongAgo) {
         sendData(commandMessage.getBytes());

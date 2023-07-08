@@ -9,7 +9,8 @@ void logNetworkInterfaces() async {
     print('== Interface: ${interface.name} ==');
     for (var addr in interface.addresses) {
       print(
-          '${addr.address} ${addr.host} ${addr.isLoopback} ${addr.rawAddress} ${addr.type.name}');
+        '${addr.address} ${addr.host} ${addr.isLoopback} ${addr.rawAddress} ${addr.type.name}',
+      );
     }
   }
 }
