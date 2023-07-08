@@ -45,6 +45,7 @@ class SlideToEnableState extends State<SlideToEnable>
     super.didUpdateWidget(oldWidget);
 
     if (widget.enabled != oldWidget.enabled) {
+      _enabled = widget.enabled;
       if (widget.enabled) {
         _dragController.forward();
       } else {

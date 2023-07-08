@@ -68,4 +68,61 @@ class CommandMessage {
 
     return _builder.takeBytes();
   }
+
+  static CommandMessage from(CommandMessage message) {
+    var commandMessage = CommandMessage();
+
+    commandMessage.enabled = message.enabled;
+    commandMessage.speed = message.speed;
+    commandMessage.turn = message.turn;
+    commandMessage.auxiliary = message.auxiliary;
+    commandMessage.advanced = message.advanced;
+    commandMessage.angleP = message.angleP;
+    commandMessage.angleI = message.angleI;
+    commandMessage.angleD = message.angleD;
+    commandMessage.speedP = message.speedP;
+    commandMessage.speedI = message.speedI;
+    commandMessage.speedD = message.speedD;
+    commandMessage.saveRecallState = message.saveRecallState;
+
+    return commandMessage;
+  }
+
+  @override
+  String toString() {
+    return 'CommandMessage{enabled: $enabled, speed: $speed, turn: $turn, auxiliary: $auxiliary, advanced: $advanced, angleP: $angleP, angleI: $angleI, angleD: $angleD, speedP: $speedP, speedI: $speedI, speedD: $speedD, saveRecallState: $saveRecallState}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CommandMessage &&
+        enabled == other.enabled &&
+        speed == other.speed &&
+        turn == other.turn &&
+        auxiliary == other.auxiliary &&
+        advanced == other.advanced &&
+        angleP == other.angleP &&
+        angleI == other.angleI &&
+        angleD == other.angleD &&
+        speedP == other.speedP &&
+        speedI == other.speedI &&
+        speedD == other.speedD &&
+        saveRecallState == other.saveRecallState;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        enabled,
+        speed,
+        turn,
+        auxiliary,
+        advanced,
+        angleP,
+        angleI,
+        angleD,
+        speedP,
+        speedI,
+        speedD,
+        saveRecallState,
+      );
 }

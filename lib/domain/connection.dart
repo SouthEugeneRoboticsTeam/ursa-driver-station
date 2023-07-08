@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 
 import '../models/connection_model.dart';
@@ -12,11 +11,15 @@ import 'dtos/telemetry_message.dart';
 import 'networking.dart';
 
 CommandMessage commandMessage = CommandMessage();
+CommandMessage _previousCommandMessage = CommandMessage();
+
 Timer? connectionTimeoutTimer;
 
 RawDatagramSocket? socket;
 Timer? sendLoop;
 StreamSubscription? subscription;
+
+DateTime? lastMessageSend;
 
 Future initConnection() async {
   Connectivity().onConnectivityChanged.listen(connectivityChangedListener);
@@ -59,11 +62,29 @@ void initSendLoop() {
   sendLoop?.cancel();
 
   sendLoop = Timer.periodic(
-    const Duration(milliseconds: 50),
-    (Timer t) => SchedulerBinding.instance.scheduleTask(
-      () => sendData(commandMessage.getBytes()),
-      Priority.touch,
-    ),
+    const Duration(milliseconds: 10),
+    (Timer t) {
+      // Send message if...
+      //   1. The message has changed AND we haven't sent a message in the past 20ms, OR
+      //   2. We haven't sent a message in the past 500ms
+      //
+      // TODO: We should replace #2 with a heartbeat message
+
+      bool messageChanged = commandMessage != _previousCommandMessage;
+      bool messageSentRecently = lastMessageSend != null &&
+          lastMessageSend!.isAfter(
+              DateTime.now().subtract(const Duration(milliseconds: 20)));
+      bool messageSentLongAgo = lastMessageSend == null ||
+          lastMessageSend!.isBefore(
+              DateTime.now().subtract(const Duration(milliseconds: 500)));
+
+      if ((messageChanged && !messageSentRecently) || messageSentLongAgo) {
+        sendData(commandMessage.getBytes());
+
+        lastMessageSend = DateTime.now();
+        _previousCommandMessage = CommandMessage.from(commandMessage);
+      }
+    },
   );
 }
 
@@ -124,7 +145,8 @@ void telemetryMessageListener(TelemetryMessage message) {
   TelemetryModel().setTelemetry(message);
   ConnectionModel().setStatus(ConnectionStatus.connected);
 
-  if (message.enabled != commandMessage.enabled) {
+  // If the enabled state has changed, update the UI
+  if (message.enabled != _previousCommandMessage.enabled) {
     setEnabledCommand(message.enabled);
   }
 
