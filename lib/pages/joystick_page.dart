@@ -14,10 +14,9 @@ import '../components/model_viewer/model_viewer_stub.dart' // Stub implementatio
     if (dart.library.html) '../components/model_viewer/model_viewer_web.dart'; // dart:html implementation
 import '../components/status.dart';
 import '../components/telemetry_table.dart';
-import '../domain/connection.dart';
-import '../domain/dtos/telemetry_message.dart';
 import '../models/connection_model.dart';
-import '../models/telemetry_model.dart';
+import '../models/desired_state_model.dart';
+import '../models/robot_state_model.dart';
 
 class JoystickPage extends StatefulWidget {
   const JoystickPage({Key? key}) : super(key: key);
@@ -29,17 +28,16 @@ class JoystickPage extends StatefulWidget {
 class JoystickPageState extends State<JoystickPage> {
   joystick.StickDragDetails? _stickDragDetails;
 
-  TelemetryMessage? _telemetryMessage;
+  RobotStateModel _robotState = RobotStateModel();
   bool _isEnabled = false;
   double _pitch = 0;
 
-  // constructor
   JoystickPageState() {
-    TelemetryModel().addListener(() {
+    RobotStateModel().addListener(() {
       setState(() {
-        _telemetryMessage = TelemetryModel().telemetryMessage;
-        _pitch = TelemetryModel().telemetryMessage?.pitch ?? 0;
-        _isEnabled = TelemetryModel().telemetryMessage?.enabled ?? false;
+        _robotState = RobotStateModel();
+        _pitch = RobotStateModel().pitch ?? 0;
+        _isEnabled = RobotStateModel().enabled ?? false;
       });
     });
   }
@@ -63,12 +61,12 @@ class JoystickPageState extends State<JoystickPage> {
                     : 0,
               ),
             ),
-            TelemetryTable(telemetryMessage: _telemetryMessage),
+            TelemetryTable(robotState: _robotState),
           ],
         ),
       );
     } else {
-      return TelemetryTable(telemetryMessage: _telemetryMessage);
+      return TelemetryTable(robotState: _robotState);
     }
   }
 
@@ -113,7 +111,7 @@ class JoystickPageState extends State<JoystickPage> {
                             SlideToEnable(
                               enabled: _isEnabled,
                               onStateChange: (value) {
-                                setEnabledCommand(value);
+                                DesiredStateModel().setEnabled(value);
                               },
                             ),
                           ],
@@ -129,7 +127,7 @@ class JoystickPageState extends State<JoystickPage> {
                               _stickDragDetails = details;
                             });
 
-                            setJoystickCommand(details);
+                            DesiredStateModel().setSpeedTurn(details);
                           },
                         ),
                       ],
@@ -148,10 +146,13 @@ class JoystickPageState extends State<JoystickPage> {
                             const SizedBox(height: 10),
                             SlideToEnable(
                               height: clampDouble(
-                                  constraints.maxHeight / 4, 50, 70,),
+                                constraints.maxHeight / 4,
+                                50,
+                                70,
+                              ),
                               enabled: _isEnabled,
                               onStateChange: (value) {
-                                setEnabledCommand(value);
+                                DesiredStateModel().setEnabled(value);
                               },
                             ),
                           ],
@@ -172,7 +173,7 @@ class JoystickPageState extends State<JoystickPage> {
                                   _stickDragDetails = details;
                                 });
 
-                                setJoystickCommand(details);
+                                DesiredStateModel().setSpeedTurn(details);
                               },
                             ),
                           ],

@@ -1,5 +1,12 @@
 import 'dart:typed_data';
 
+import '../../models/desired_state_model.dart';
+
+double remap(
+    double value, double low1, double high1, double low2, double high2) {
+  return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
+}
+
 class CommandMessage {
   final BytesBuilder _builder = BytesBuilder();
 
@@ -69,21 +76,38 @@ class CommandMessage {
     return _builder.takeBytes();
   }
 
-  static CommandMessage from(CommandMessage message) {
+  static CommandMessage from(Object object) {
     var commandMessage = CommandMessage();
 
-    commandMessage.enabled = message.enabled;
-    commandMessage.speed = message.speed;
-    commandMessage.turn = message.turn;
-    commandMessage.auxiliary = message.auxiliary;
-    commandMessage.advanced = message.advanced;
-    commandMessage.angleP = message.angleP;
-    commandMessage.angleI = message.angleI;
-    commandMessage.angleD = message.angleD;
-    commandMessage.speedP = message.speedP;
-    commandMessage.speedI = message.speedI;
-    commandMessage.speedD = message.speedD;
-    commandMessage.saveRecallState = message.saveRecallState;
+    if (object is CommandMessage) {
+      commandMessage.enabled = object.enabled;
+      commandMessage.speed = object.speed;
+      commandMessage.turn = object.turn;
+      commandMessage.auxiliary = object.auxiliary;
+      commandMessage.advanced = object.advanced;
+      commandMessage.angleP = object.angleP;
+      commandMessage.angleI = object.angleI;
+      commandMessage.angleD = object.angleD;
+      commandMessage.speedP = object.speedP;
+      commandMessage.speedI = object.speedI;
+      commandMessage.speedD = object.speedD;
+      commandMessage.saveRecallState = object.saveRecallState;
+    } else if (object is DesiredStateModel) {
+      commandMessage.enabled = object.enabled;
+      commandMessage.speed = remap(object.speed, -1, 1, 0, 200).round();
+      commandMessage.turn = remap(object.turn, -1, 1, 0, 200).round();
+      commandMessage.auxiliary = object.auxiliary;
+      commandMessage.advanced = object.advanced;
+      commandMessage.angleP = object.angleP;
+      commandMessage.angleI = object.angleI;
+      commandMessage.angleD = object.angleD;
+      commandMessage.speedP = object.speedP;
+      commandMessage.speedI = object.speedI;
+      commandMessage.speedD = object.speedD;
+      commandMessage.saveRecallState = object.saveRecallState;
+    } else {
+      throw Exception('Object must be CommandMessage or DesiredStateModel');
+    }
 
     return commandMessage;
   }

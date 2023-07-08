@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../domain/connection.dart';
-import '../domain/dtos/telemetry_message.dart';
-import '../models/telemetry_model.dart';
+import '../models/desired_state_model.dart';
+import '../models/robot_state_model.dart';
 
 class ConfigParameter {
   final String label;
@@ -54,7 +53,7 @@ class ConfigPageState extends State<ConfigPage> {
         )
         .toList();
 
-    _telemetryListener(useSetState: false);
+    _robotStateListener(useSetState: false);
 
     PackageInfo.fromPlatform()
         .then((value) => setState(() => packageVersion = value.version));
@@ -149,7 +148,7 @@ class ConfigPageState extends State<ConfigPage> {
         .map((parameter) => _getParsedValue(parameter.controller.text))
         .toList();
 
-    setPidCommand(
+    DesiredStateModel().setPid(
       angleValues[0],
       angleValues[1],
       angleValues[2],
@@ -168,7 +167,7 @@ class ConfigPageState extends State<ConfigPage> {
         .map((parameter) => _getParsedValue(parameter.controller.text))
         .toList();
 
-    setPidCommand(
+    DesiredStateModel().setPid(
       angleValues[0],
       angleValues[1],
       angleValues[2],
@@ -188,26 +187,27 @@ class ConfigPageState extends State<ConfigPage> {
     // wait 100ms for message to send
     Future.delayed(const Duration(milliseconds: 100), () {
       // listen to next telemetry message
-      TelemetryModel().addListener(_telemetryListener);
+      RobotStateModel().addListener(_robotStateListener);
     });
   }
 
-  void _telemetryListener({bool useSetState = true}) {
-    TelemetryMessage? message = TelemetryModel().telemetryMessage;
-    if (message != null && message.containsPid) {
+  void _robotStateListener({bool useSetState = true}) {
+    RobotStateModel robotState = RobotStateModel();
+
+    if (robotState.containsPid == true) {
       _angleParameters[0].controller.text =
-          num.parse(message.angleP.toStringAsFixed(6)).toString();
+          num.parse(robotState.angleP!.toStringAsFixed(6)).toString();
       _angleParameters[1].controller.text =
-          num.parse(message.angleI.toStringAsFixed(6)).toString();
+          num.parse(robotState.angleI!.toStringAsFixed(6)).toString();
       _angleParameters[2].controller.text =
-          num.parse(message.angleD.toStringAsFixed(6)).toString();
+          num.parse(robotState.angleD!.toStringAsFixed(6)).toString();
 
       _speedParameters[0].controller.text =
-          num.parse(message.speedP.toStringAsFixed(6)).toString();
+          num.parse(robotState.speedP!.toStringAsFixed(6)).toString();
       _speedParameters[1].controller.text =
-          num.parse(message.speedI.toStringAsFixed(6)).toString();
+          num.parse(robotState.speedI!.toStringAsFixed(6)).toString();
       _speedParameters[2].controller.text =
-          num.parse(message.speedD.toStringAsFixed(6)).toString();
+          num.parse(robotState.speedD!.toStringAsFixed(6)).toString();
 
       if (useSetState) {
         setState(() {
@@ -218,7 +218,7 @@ class ConfigPageState extends State<ConfigPage> {
       }
 
       // Remove self
-      TelemetryModel().removeListener(_telemetryListener);
+      RobotStateModel().removeListener(_robotStateListener);
     }
   }
 

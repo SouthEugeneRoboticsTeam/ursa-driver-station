@@ -26,7 +26,7 @@ void main() async {
     ),
   );
 
-  initConnection();
+  ConnectionManager();
 }
 
 class UrsaApp extends StatelessWidget {
