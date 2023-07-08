@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../domain/connection.dart';
 import '../domain/dtos/telemetry_message.dart';
@@ -30,9 +31,9 @@ class ConfigPageState extends State<ConfigPage> {
 
   bool hasData = true;
 
-  ConfigPageState() {
-    _telemetryListener(useSetState: false);
+  String packageVersion = '';
 
+  ConfigPageState() {
     _angleParameters = ['Angle P', 'Angle I', 'Angle D']
         .map(
           (e) => ConfigParameter(
@@ -52,6 +53,11 @@ class ConfigPageState extends State<ConfigPage> {
           ),
         )
         .toList();
+
+    _telemetryListener(useSetState: false);
+
+    PackageInfo.fromPlatform()
+        .then((value) => setState(() => packageVersion = value.version));
 
     // Set up listeners for focus events
     for (var element in [..._angleParameters, ..._speedParameters]) {
@@ -94,9 +100,15 @@ class ConfigPageState extends State<ConfigPage> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: ListView(
-            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: [
+              Text(
+                'App version: $packageVersion',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+
+              const SizedBox(height: 20),
+
               _buildConfigSection(
                 _angleParameters,
                 AppLocalizations.of(context)!.angleConfig,

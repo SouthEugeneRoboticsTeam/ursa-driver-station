@@ -16,5 +16,7 @@
   "angleConfig": "Angle PID Config",
   "speedConfig": "Speed PID Config",
   "save": "Save",
-  "saveSuccess": "Successfully saved config"
+  "saveSuccess": "Successfully saved config",
+
+  "appVersion": "Version"
 }

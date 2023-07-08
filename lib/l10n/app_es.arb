@@ -16,5 +16,7 @@
   "angleConfig": "Configuración de PID de ángulo",
   "speedConfig": "Configuración de PID de velocidad",
   "save": "Guardar",
-  "saveSuccess": "Configuración guardada exitosamente"
+  "saveSuccess": "Configuración guardada exitosamente",
+
+  "appVersion": "Versión"
 }
