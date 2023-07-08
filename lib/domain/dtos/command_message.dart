@@ -26,30 +26,13 @@ class CommandMessage {
   double speedD = 0;
   int saveRecallState = 1;
 
-  int _speed = 100;
-
-  set speed(int value) {
-    _speed = value + 100;
-  }
-
-  int get speed {
-    return _speed - 100;
-  }
-
-  int _turn = 100;
-
-  set turn(int value) {
-    _turn = value + 100;
-  }
-
-  int get turn {
-    return _turn - 100;
-  }
+  int speed = 0;
+  int turn = 0;
 
   List<int> getBytes() {
     _builder.addByte(enabled ? 1 : 0);
-    _builder.addByte(_speed);
-    _builder.addByte(_turn);
+    _builder.addByte(speed);
+    _builder.addByte(turn);
     _builder.addByte(auxiliary);
     _builder.addByte(advanced ? 1 : 0);
 

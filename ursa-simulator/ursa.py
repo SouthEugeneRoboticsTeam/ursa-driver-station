@@ -116,6 +116,7 @@ class RobotState:
 
 
 state = RobotState()
+command = None
 
 
 def emit_telemetry(socket):
@@ -132,6 +133,8 @@ def emit_telemetry(socket):
 
 def receive_commands(socket):
   while True:
+    global command
+
     data, addr = socket.recvfrom(1024)
     command = CommandMessage(data)
 
@@ -146,6 +149,8 @@ def show_ui(stdscr):
   stdscr.timeout(100)
 
   while True:
+    global command
+
     stdscr.clear()
 
     stdscr.addstr(0, 0, f'Enabled: {state.enabled}')
@@ -161,6 +166,9 @@ def show_ui(stdscr):
 
     stdscr.addstr(11, 0, f'Angle P: {state.angleP}')
     stdscr.addstr(12, 0, f'Speed P: {state.angleI}')
+
+    stdscr.addstr(14, 0, f'Command Speed: {command.speed if command is not None else -1}')
+    stdscr.addstr(15, 0, f'Command Turn: {command.turn if command is not None else -1}')
 
     stdscr.refresh()
 

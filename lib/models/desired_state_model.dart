@@ -32,7 +32,7 @@ class DesiredStateModel extends ChangeNotifier {
   }
 
   void setSpeedTurn(StickDragDetails details) {
-    speed = details.y;
+    speed = -details.y;
     turn = details.x;
 
     notifyListeners();
