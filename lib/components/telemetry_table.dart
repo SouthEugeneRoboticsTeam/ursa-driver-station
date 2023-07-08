@@ -35,15 +35,25 @@ class TelemetryTable extends StatelessWidget {
         createTableRow('Tipped', robotState.tipped?.toString() ?? 'no data'),
         createTableRow('Voltage', robotState.voltage?.toString() ?? 'no data'),
         createTableRow(
-            'Pitch', robotState.pitch?.toStringAsFixed(2) ?? 'no data'),
-        createTableRow('Pitch Target',
-            robotState.pitchTarget?.toStringAsFixed(2) ?? 'no data'),
-        createTableRow('Pitch Offset',
-            robotState.pitchOffset?.toStringAsFixed(2) ?? 'no data'),
-        createTableRow('Left Speed',
-            robotState.leftMotorSpeed?.toStringAsFixed(2) ?? 'no data'),
-        createTableRow('Right Speed',
-            robotState.rightMotorSpeed?.toStringAsFixed(2) ?? 'no data'),
+          'Pitch',
+          robotState.pitch?.toStringAsFixed(2) ?? 'no data',
+        ),
+        createTableRow(
+          'Pitch Target',
+          robotState.pitchTarget?.toStringAsFixed(2) ?? 'no data',
+        ),
+        createTableRow(
+          'Pitch Offset',
+          robotState.pitchOffset?.toStringAsFixed(2) ?? 'no data',
+        ),
+        createTableRow(
+          'Left Speed',
+          robotState.leftMotorSpeed?.toStringAsFixed(2) ?? 'no data',
+        ),
+        createTableRow(
+          'Right Speed',
+          robotState.rightMotorSpeed?.toStringAsFixed(2) ?? 'no data',
+        ),
       ],
     );
   }

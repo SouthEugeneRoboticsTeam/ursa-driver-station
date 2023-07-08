@@ -3,7 +3,12 @@ import 'dart:typed_data';
 import '../../models/desired_state_model.dart';
 
 double remap(
-    double value, double low1, double high1, double low2, double high2) {
+  double value,
+  double low1,
+  double high1,
+  double low2,
+  double high2,
+) {
   return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
 }
 
