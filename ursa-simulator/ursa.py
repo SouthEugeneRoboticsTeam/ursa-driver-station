@@ -164,8 +164,8 @@ def show_ui(stdscr):
     stdscr.addstr(8, 0, f'Pitch Target: {state.pitchTarget}')
     stdscr.addstr(9, 0, f'Pitch Offset: {state.pitchOffset}')
 
-    stdscr.addstr(11, 0, f'Angle P: {state.angleP}')
-    stdscr.addstr(12, 0, f'Speed P: {state.angleI}')
+    stdscr.addstr(11, 0, f'Angle PID: {state.angleP}, {state.angleI}, {state.angleD}')
+    stdscr.addstr(12, 0, f'Speed PID: {state.speedP}, {state.speedI}, {state.speedD}')
 
     stdscr.addstr(14, 0, f'Command Speed: {command.speed if command is not None else -1}')
     stdscr.addstr(15, 0, f'Command Turn: {command.turn if command is not None else -1}')
