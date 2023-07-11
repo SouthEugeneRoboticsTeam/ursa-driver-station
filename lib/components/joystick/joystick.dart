@@ -9,14 +9,14 @@ class Joystick extends StatelessWidget {
 
   final double size;
 
-  const Joystick({Key? key, required this.listener, this.size = 200}) : super(key: key);
+  const Joystick({Key? key, required this.listener, this.size = 280}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return joystick.Joystick(
       listener: listener,
       base: JoystickBase(size: size),
-      stick: JoystickStick(size: size * 0.3),
+      stick: JoystickStick(size: size * 0.25),
       period: const Duration(milliseconds: 5),
     );
   }
