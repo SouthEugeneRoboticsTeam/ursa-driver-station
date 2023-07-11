@@ -121,8 +121,8 @@ command = None
 
 def emit_telemetry(socket):
   while True:
-    # emit at 20Hz
-    time.sleep(0.05)
+    # emit at 50Hz
+    time.sleep(0.02)
 
     if state.addr is None:
       continue

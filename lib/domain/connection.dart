@@ -96,13 +96,15 @@ class ConnectionManager {
   }
 
   void telemetryMessageListener(TelemetryMessage message) {
+    bool? previouslyEnabled = RobotStateModel().enabled;
+
     RobotStateModel().setFromTelemetry(message);
     ConnectionModel().setStatus(ConnectionStatus.connected);
 
-    // If the enabled state has changed, update the UI
-    // if (message.enabled != _previousCommandMessage.enabled) {
-    //   DesiredStateModel().setEnabled(message.enabled);
-    // }
+    // If we were previously enabled and now we're not, update DesiredStateModel
+    if (previouslyEnabled == true && !message.enabled) {
+      DesiredStateModel().setEnabled(false);
+    }
 
     // Expect a message at least every 2 seconds
     connectionTimeoutTimer?.cancel();
