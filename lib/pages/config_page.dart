@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../models/config_model.dart';
 import '../models/desired_state_model.dart';
 import '../models/robot_state_model.dart';
 
@@ -68,7 +69,7 @@ class ConfigPageState extends State<ConfigPage> {
     }
   }
 
-  Widget _buildConfigSection(List<ConfigParameter> parameters, String title) {
+  Widget _buildPidSection(List<ConfigParameter> parameters, String title) {
     return Column(
       children: [
         Text(title, style: Theme.of(context).textTheme.headlineSmall),
@@ -89,6 +90,45 @@ class ConfigPageState extends State<ConfigPage> {
     );
   }
 
+  Widget _buildLimitSection(
+    String title,
+    double value,
+    void Function(double) onChange,
+  ) {
+    var controller = TextEditingController(text: value.toStringAsFixed(2));
+    var focusNode = FocusNode();
+
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        onChange(_getParsedValue(controller.text).clamp(0, 1));
+      }
+    });
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        SizedBox(
+          width: 150,
+          child: TextField(
+            decoration: InputDecoration(labelText: title),
+            keyboardType: TextInputType.number,
+            enabled: hasData,
+            controller: controller,
+            focusNode: focusNode,
+          ),
+        ),
+        Expanded(
+          child: Slider(
+            value: value,
+            onChanged: (e) => onChange(
+              e.clamp(0, 1),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,26 +145,17 @@ class ConfigPageState extends State<ConfigPage> {
                 'App version: $packageVersion',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-
               const SizedBox(height: 20),
-
-              _buildConfigSection(
+              _buildPidSection(
                 _angleParameters,
                 AppLocalizations.of(context)!.angleConfig,
               ),
-
-              // 20px spacer
               const SizedBox(height: 20),
-
-              _buildConfigSection(
+              _buildPidSection(
                 _speedParameters,
                 AppLocalizations.of(context)!.speedConfig,
               ),
-
-              // 20px spacer
               const SizedBox(height: 20),
-
-              // save button
               ElevatedButton(
                 onPressed: hasData
                     ? () {
@@ -132,6 +163,29 @@ class ConfigPageState extends State<ConfigPage> {
                       }
                     : null,
                 child: Text(AppLocalizations.of(context)!.save),
+              ),
+              const SizedBox(height: 50),
+              Text(
+                AppLocalizations.of(context)!.limits,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              _buildLimitSection(
+                AppLocalizations.of(context)!.speedLimit,
+                ConfigModel().speedScalar,
+                (e) {
+                  setState(() {
+                    ConfigModel().setSpeedScalar(e);
+                  });
+                },
+              ),
+              _buildLimitSection(
+                AppLocalizations.of(context)!.turnLimit,
+                ConfigModel().turnScalar,
+                (e) {
+                  setState(() {
+                    ConfigModel().setTurnScalar(e);
+                  });
+                },
               ),
             ],
           ),

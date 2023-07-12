@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import '../../models/config_model.dart';
 import '../../models/desired_state_model.dart';
 
 double remap(
@@ -64,7 +65,7 @@ class CommandMessage {
     return _builder.takeBytes();
   }
 
-  static CommandMessage from(Object object) {
+  static CommandMessage from(Object object, {ConfigModel? config}) {
     var commandMessage = CommandMessage();
 
     if (object is CommandMessage) {
@@ -82,8 +83,8 @@ class CommandMessage {
       commandMessage.saveRecallState = object.saveRecallState;
     } else if (object is DesiredStateModel) {
       commandMessage.enabled = object.enabled;
-      commandMessage.speed = remap(object.speed, -1, 1, 0, 200).round();
-      commandMessage.turn = remap(object.turn, -1, 1, 0, 200).round();
+      commandMessage.speed = remap(object.speed * (config?.speedScalar ?? 1), -1, 1, 0, 200).round();
+      commandMessage.turn = remap(object.turn * (config?.turnScalar ?? 1), -1, 1, 0, 200).round();
       commandMessage.auxiliary = object.auxiliary;
       commandMessage.advanced = object.advanced;
       commandMessage.angleP = object.angleP;

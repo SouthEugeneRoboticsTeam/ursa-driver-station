@@ -18,5 +18,9 @@
   "save": "Enregistrer",
   "saveSuccess": "Configuration enregistrée avec succès",
 
+  "limits": "Limites",
+  "speedLimit": "Limitation de vitesse",
+  "turnLimit": "Limitation de virage",
+
   "appVersion": "Version"
 }

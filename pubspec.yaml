@@ -41,7 +41,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
-  shared_preferences: ^2.1.1
+  shared_preferences: ^2.2.0
   model_viewer_plus:
     git:
       url: https://github.com/GwonHyeok/model_viewer_plus.dart.git

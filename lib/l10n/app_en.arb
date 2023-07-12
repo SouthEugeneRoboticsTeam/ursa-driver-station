@@ -18,5 +18,9 @@
   "save": "Save",
   "saveSuccess": "Successfully saved config",
 
+  "limits": "Limits",
+  "speedLimit": "Speed Limit",
+  "turnLimit": "Turn Limit",
+
   "appVersion": "Version"
 }

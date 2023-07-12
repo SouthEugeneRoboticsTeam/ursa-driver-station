@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 
+import '../models/config_model.dart';
 import '../models/connection_model.dart';
 import '../models/desired_state_model.dart';
 import '../models/robot_state_model.dart';
@@ -66,7 +67,12 @@ class ConnectionManager {
     sendLoop = Timer.periodic(
       const Duration(milliseconds: 50),
       (Timer t) {
-        sendData(CommandMessage.from(DesiredStateModel()).getBytes());
+        sendData(
+          CommandMessage.from(
+            DesiredStateModel(),
+            config: ConfigModel(),
+          ).getBytes(),
+        );
       },
     );
   }
