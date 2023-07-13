@@ -33,6 +33,9 @@ class ConfigPageState extends State<ConfigPage> {
 
   String packageVersion = '';
 
+  int? robotId;
+  int? modelNumber;
+
   ConfigPageState() {
     _angleParameters = ['Angle P', 'Angle I', 'Angle D']
         .map(
@@ -70,23 +73,27 @@ class ConfigPageState extends State<ConfigPage> {
   }
 
   Widget _buildPidSection(List<ConfigParameter> parameters, String title) {
-    return Column(
-      children: [
-        Text(title, style: Theme.of(context).textTheme.headlineSmall),
-        ...parameters
-            .map(
-              (e) => TextField(
-                controller: e.controller,
-                decoration: InputDecoration(
-                  labelText: e.label,
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: Theme.of(context).textTheme.headlineSmall),
+          ...parameters
+              .map(
+                (e) => TextField(
+                  controller: e.controller,
+                  decoration: InputDecoration(
+                    labelText: e.label,
+                  ),
+                  keyboardType: TextInputType.number,
+                  enabled: hasData,
+                  focusNode: e.focusNode,
                 ),
-                keyboardType: TextInputType.number,
-                enabled: hasData,
-                focusNode: e.focusNode,
-              ),
-            )
-            .toList(),
-      ],
+              )
+              .toList(),
+        ],
+      ),
     );
   }
 
@@ -135,61 +142,65 @@ class ConfigPageState extends State<ConfigPage> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.config),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              Text(
-                'App version: $packageVersion',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 20),
-              _buildPidSection(
-                _angleParameters,
-                AppLocalizations.of(context)!.angleConfig,
-              ),
-              const SizedBox(height: 20),
-              _buildPidSection(
-                _speedParameters,
-                AppLocalizations.of(context)!.speedConfig,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: hasData
-                    ? () {
-                        _saveConfig(context);
-                      }
-                    : null,
-                child: Text(AppLocalizations.of(context)!.save),
-              ),
-              const SizedBox(height: 50),
-              Text(
-                AppLocalizations.of(context)!.limits,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              _buildLimitSection(
-                AppLocalizations.of(context)!.speedLimit,
-                ConfigModel().speedScalar,
-                (e) {
-                  setState(() {
-                    ConfigModel().setSpeedScalar(e);
-                  });
-                },
-              ),
-              _buildLimitSection(
-                AppLocalizations.of(context)!.turnLimit,
-                ConfigModel().turnScalar,
-                (e) {
-                  setState(() {
-                    ConfigModel().setTurnScalar(e);
-                  });
-                },
-              ),
-            ],
+      body: ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(24),
+        children: [
+          _buildPidSection(
+            _angleParameters,
+            AppLocalizations.of(context)!.angleConfig,
           ),
-        ),
+          const SizedBox(height: 24),
+          _buildPidSection(
+            _speedParameters,
+            AppLocalizations.of(context)!.speedConfig,
+          ),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: hasData
+                ? () {
+                    _saveConfig(context);
+                  }
+                : null,
+            child: Text(AppLocalizations.of(context)!.saveToRobot),
+          ),
+          const SizedBox(height: 48),
+          Text(
+            AppLocalizations.of(context)!.limits,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          _buildLimitSection(
+            AppLocalizations.of(context)!.speedLimit,
+            ConfigModel().speedScalar,
+            (e) {
+              setState(() {
+                ConfigModel().setSpeedScalar(e);
+              });
+            },
+          ),
+          _buildLimitSection(
+            AppLocalizations.of(context)!.turnLimit,
+            ConfigModel().turnScalar,
+            (e) {
+              setState(() {
+                ConfigModel().setTurnScalar(e);
+              });
+            },
+          ),
+          const SizedBox(height: 48),
+          Text(
+            'App Version: $packageVersion',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          Text(
+            'Robot ID: ${robotId ?? 'not connected'}',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          Text(
+            'Robot Model Number: ${modelNumber ?? 'not connected'}',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        ],
       ),
     );
   }
@@ -262,6 +273,9 @@ class ConfigPageState extends State<ConfigPage> {
           num.parse(robotState.speedI!.toStringAsFixed(6)).toString();
       _speedParameters[2].controller.text =
           num.parse(robotState.speedD!.toStringAsFixed(6)).toString();
+
+      robotId = robotState.robotId;
+      modelNumber = robotState.modelNumber;
 
       if (useSetState) {
         setState(() {

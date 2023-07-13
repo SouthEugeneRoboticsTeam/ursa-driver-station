@@ -15,7 +15,7 @@
   "config": "Configuración",
   "angleConfig": "Configuración de PID de ángulo",
   "speedConfig": "Configuración de PID de velocidad",
-  "save": "Guardar",
+  "saveToRobot": "Guardar en el robot",
   "saveSuccess": "Configuración guardada exitosamente",
 
   "limits": "Límites",
