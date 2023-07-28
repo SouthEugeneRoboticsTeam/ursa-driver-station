@@ -59,6 +59,48 @@ jobs:
           files: |
             gh-release/*.apk
 
+  build-ios:
+    name: Build iOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '${{ env.FLUTTER_VERSION }}'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build IPA
+        run: flutter build ipa
+
+      - name: List files
+        run: ls -R build/
+
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: URSADriverStation_android
+      #     path: build/app/outputs/flutter-apk/*.apk
+
+      # - name: Rename artifact
+      #   if: startsWith(github.ref, 'refs/tags/v')
+      #   run: |
+      #     ls -R build/app/outputs/flutter-apk
+      #     mkdir gh-release
+      #     cp build/app/outputs/flutter-apk/app-release.apk gh-release/URSADriverStation-${GITHUB_REF#refs/tags/v}_android.apk
+
+      # - name: Upload release artifact
+      #   uses: softprops/action-gh-release@v1
+      #   if: startsWith(github.ref, 'refs/tags/v')
+      #   with:
+      #     files: |
+      #       gh-release/*.apk
+
   build-linux:
     name: Build Linux
     runs-on: ubuntu-latest
