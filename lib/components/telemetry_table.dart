@@ -21,6 +21,15 @@ class TelemetryTable extends StatelessWidget {
     );
   }
 
+  /// Scale the voltage from 0-256 to 0-4.2 volts.
+  double? scaleVolts(int? rawVoltage) {
+    if (rawVoltage == null) {
+      return null;
+    }
+
+    return rawVoltage / 256.0 * 4.2;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Table(
@@ -31,9 +40,11 @@ class TelemetryTable extends StatelessWidget {
       },
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: <TableRow>[
-        createTableRow('Enabled', robotState.enabled?.toString() ?? 'no data'),
         createTableRow('Tipped', robotState.tipped?.toString() ?? 'no data'),
-        createTableRow('Voltage', robotState.voltage?.toString() ?? 'no data'),
+        createTableRow(
+          'Voltage',
+          scaleVolts(robotState.voltage)?.toStringAsFixed(1) ?? 'no data',
+        ),
         createTableRow(
           'Pitch',
           robotState.pitch?.toStringAsFixed(2) ?? 'no data',
