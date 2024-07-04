@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 
+import '../domain/dtos/command_message.dart';
+
 class DesiredStateModel extends ChangeNotifier {
   static final DesiredStateModel _instance = DesiredStateModel._internal();
 
@@ -19,7 +21,7 @@ class DesiredStateModel extends ChangeNotifier {
   double speedP = 0;
   double speedI = 0;
   double speedD = 0;
-  int saveRecallState = 1;
+  int saveRecallState = SaveRecallState.recall.value;
 
   // -1 to 1... mapped to 0 to 200 in the command message
   double speed = 0;
@@ -48,20 +50,21 @@ class DesiredStateModel extends ChangeNotifier {
     bool save = false,
   }) {
     advanced = true;
-    saveRecallState = save ? 2 : 1;
+    saveRecallState =
+        save ? SaveRecallState.save.value : SaveRecallState.recall.value;
 
-    angleP = angleP;
-    angleI = angleI;
-    angleD = angleD;
-    speedP = speedP;
-    speedI = speedI;
-    speedD = speedD;
+    this.angleP = angleP;
+    this.angleI = angleI;
+    this.angleD = angleD;
+    this.speedP = speedP;
+    this.speedI = speedI;
+    this.speedD = speedD;
 
     notifyListeners();
   }
 
-  void setSaveRecallState(int value) {
-    saveRecallState = value;
+  void setSaveRecallState(SaveRecallState state) {
+    saveRecallState = state.value;
 
     notifyListeners();
   }

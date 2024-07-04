@@ -95,7 +95,9 @@ class ConnectionManager {
 
     try {
       socket?.send(message, robotAddress, robotPort);
-      DesiredStateModel().saveRecallState = 1;
+
+      // Reset to recall state after sending a message
+      DesiredStateModel().setSaveRecallState(SaveRecallState.recall);
     } catch (e) {
       print('Could not send data, ensure robot is connected');
     }

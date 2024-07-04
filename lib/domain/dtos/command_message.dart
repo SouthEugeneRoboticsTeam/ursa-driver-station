@@ -3,6 +3,16 @@ import 'dart:typed_data';
 import '../../models/config_model.dart';
 import '../../models/desired_state_model.dart';
 
+enum SaveRecallState {
+  none(0),
+  recall(1),
+  save(2);
+
+  const SaveRecallState(this.value);
+
+  final int value;
+}
+
 double remap(
   double value,
   double low1,
@@ -25,7 +35,7 @@ class CommandMessage {
   double speedP = 0;
   double speedI = 0;
   double speedD = 0;
-  int saveRecallState = 1;
+  int saveRecallState = SaveRecallState.recall.value;
 
   int speed = 0;
   int turn = 0;
@@ -83,8 +93,11 @@ class CommandMessage {
       commandMessage.saveRecallState = object.saveRecallState;
     } else if (object is DesiredStateModel) {
       commandMessage.enabled = object.enabled;
-      commandMessage.speed = remap(object.speed * (config?.speedScalar ?? 1), -1, 1, 0, 200).round();
-      commandMessage.turn = remap(object.turn * (config?.turnScalar ?? 1), -1, 1, 0, 200).round();
+      commandMessage.speed =
+          remap(object.speed * (config?.speedScalar ?? 1), -1, 1, 0, 200)
+              .round();
+      commandMessage.turn =
+          remap(object.turn * (config?.turnScalar ?? 1), -1, 1, 0, 200).round();
       commandMessage.auxiliary = object.auxiliary;
       commandMessage.advanced = object.advanced;
       commandMessage.angleP = object.angleP;
