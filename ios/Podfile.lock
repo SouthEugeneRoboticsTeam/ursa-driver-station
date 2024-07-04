@@ -1,20 +1,17 @@
 PODS:
-  - "app_settings (3.0.0+1)":
+  - app_settings (5.1.1):
     - Flutter
   - connectivity_plus (0.0.1):
     - Flutter
-    - ReachabilitySwift
+    - FlutterMacOS
   - Flutter (1.0.0)
   - package_info_plus (0.4.5):
     - Flutter
-  - ReachabilitySwift (5.0.0)
-  - Sentry/HybridSDK (8.7.3):
-    - SentryPrivate (= 8.7.3)
-  - sentry_flutter (0.0.1):
+  - Sentry/HybridSDK (8.29.0)
+  - sentry_flutter (8.3.0):
     - Flutter
     - FlutterMacOS
-    - Sentry/HybridSDK (= 8.7.3)
-  - SentryPrivate (8.7.3)
+    - Sentry/HybridSDK (= 8.29.0)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -25,7 +22,7 @@ PODS:
 
 DEPENDENCIES:
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
-  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/darwin`)
   - Flutter (from `Flutter`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
@@ -35,15 +32,13 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - ReachabilitySwift
     - Sentry
-    - SentryPrivate
 
 EXTERNAL SOURCES:
   app_settings:
     :path: ".symlinks/plugins/app_settings/ios"
   connectivity_plus:
-    :path: ".symlinks/plugins/connectivity_plus/ios"
+    :path: ".symlinks/plugins/connectivity_plus/darwin"
   Flutter:
     :path: Flutter
   package_info_plus:
@@ -58,17 +53,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
-  app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
-  connectivity_plus: 07c49e96d7fc92bc9920617b83238c4d178b446a
+  app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
+  connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
-  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  Sentry: c7a86f43510a7d5678d4de28d78c28ab351d295b
-  sentry_flutter: f2710a4f537e9a7143b02562b8754ccdc8224751
-  SentryPrivate: 2eaabf598a46d4b9b8822aef766df2a84caf2e6f
-  shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
-  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
-  webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
+  package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
+  Sentry: 016de45ee5ce5fca2a829996f1bfafeb5e62e8b4
+  sentry_flutter: 5fb57c5b7e6427a9dc1fedde4269eb65823982d4
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
+  url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
+  webview_flutter_wkwebview: be0f0d33777f1bfd0c9fdcb594786704dbf65f36
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 

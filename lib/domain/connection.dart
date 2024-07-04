@@ -28,12 +28,12 @@ class ConnectionManager {
     Connectivity().onConnectivityChanged.listen(connectivityChangedListener);
 
     Timer.periodic(const Duration(seconds: 5), (_) async {
-      ConnectivityResult result = await Connectivity().checkConnectivity();
+      List<ConnectivityResult> result = await Connectivity().checkConnectivity();
       connectivityChangedListener(result);
     });
   }
 
-  Future connectivityChangedListener(ConnectivityResult result) async {
+  Future connectivityChangedListener(List<ConnectivityResult> result) async {
     bool robotConnected = await isRobotConnected();
     InternetAddress? robotAddress = await getRobotAddress();
 

@@ -40,7 +40,7 @@ class StatusIndicator extends StatelessWidget {
         GestureDetector(
           onTap: () {
             if (connectionStatus == ConnectionStatus.disconnected) {
-              AppSettings.openWIFISettings();
+              AppSettings.openAppSettings(type: AppSettingsType.wifi);
             }
           },
           child: AnimatedContainer(
